@@ -1,0 +1,9 @@
+Building Bunnycoin
+
+See doc/readme-qt.rst for instructions on building Bunnycoin-Qt,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of Bunnycoin.
+
+See doc/build-*.txt for instructions on building bunnycoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Bunnycoin.
