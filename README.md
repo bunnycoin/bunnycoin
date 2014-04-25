@@ -1,12 +1,10 @@
 # Bunnycoin [BUNN ,BUN] 
 
 Bunnycoin is a decentralized peer-to-peer cryptocurrency based upon Bitcoin (inspired by Dogecoin), designed to spread Love, Peace, Happiness and Economic Freedom Worldwide.
-## What is Bunny?
-Approximately 100 Billion Bunnies in total. 10% of coins mined go to support user voted upon charities and good will causes using the revolutionary built-in decentralized voting/distribution system.
-
 
 ### How many bunny can exist?
 
+Approximately 100 Billion Bunnies in total. 10% of coins mined go to support user voted upon charities and good will causes using the revolutionary built-in decentralized voting/distribution system.
 
 ### Burrowing for Bunnies?
 Scrypt Proof of Work
@@ -25,13 +23,12 @@ Random block rewards to encourage individuals to participate in the mining proce
 
 400,001 — 500,000: 0-62,500 Bunnycoin Reward(random)
 
-500,001 - 600,000: 0-31,250 Bunnycoin Reward(random)
+500,001 — 600,000: 0-31,250 Bunnycoin Reward(random)
 
-600,000+ — 10,000 Bunnycoin Reward (random)
+600,000+ : 0-10,000 Bunnycoin Reward (random)
 
 
-
-### ports
+### Ports
 RPC 48444
 P2P 48445
 
