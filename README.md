@@ -29,7 +29,7 @@ Random block rewards to encourage individuals to participate in the mining proce
 
 
 ### Ports
-RPC 48444
+RPC 48444<br />
 P2P 48445
 
 
