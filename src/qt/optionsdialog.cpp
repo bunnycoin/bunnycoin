@@ -14,8 +14,8 @@
 OptionsDialog::OptionsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OptionsDialog),
-    model(0),
-    mapper(0),
+    model(nullptr),
+    mapper(nullptr),
     fRestartWarningDisplayed_Proxy(false),
     fRestartWarningDisplayed_Lang(false),
     fProxyIpValid(true)

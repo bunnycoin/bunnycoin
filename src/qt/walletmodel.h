@@ -44,7 +44,7 @@ class WalletModel : public QObject
     Q_OBJECT
 
 public:
-    explicit WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent = 0);
+    explicit WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent = nullptr);
     ~WalletModel();
 
     enum StatusCode // Returned by sendCoins
@@ -72,7 +72,7 @@ public:
     TransactionTableModel *getTransactionTableModel();
     
     std::string getDefaultWalletAddress() const;
-    qint64 getBalance(const CCoinControl *coinControl=NULL) const;
+    qint64 getBalance(const CCoinControl *coinControl=nullptr) const;
     qint64 getUnconfirmedBalance() const;
     qint64 getImmatureBalance() const;
     bool NeedsSweep() const;
@@ -95,7 +95,7 @@ public:
     };
 
     // Send coins to a list of recipients
-    SendCoinsReturn sendCoins(const QList<SendCoinsRecipient> &recipients, const CCoinControl *coinControl=NULL);
+    SendCoinsReturn sendCoins(const QList<SendCoinsRecipient> &recipients, const CCoinControl *coinControl=nullptr);
 
     // Wallet encryption
     bool setWalletEncrypted(bool encrypted, const SecureString &passphrase);

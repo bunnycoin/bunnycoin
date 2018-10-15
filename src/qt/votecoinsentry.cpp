@@ -15,7 +15,7 @@
 VoteCoinsEntry::VoteCoinsEntry(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::VoteCoinsEntry),
-    model(0)
+    model(nullptr)
 {
     ui->setupUi(this);
 

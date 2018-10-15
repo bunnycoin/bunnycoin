@@ -13,8 +13,8 @@
 
 WalletStack::WalletStack(QWidget *parent) :
     QStackedWidget(parent),
-    gui(0),
-    clientModel(0),
+    gui(nullptr),
+    clientModel(nullptr),
     bOutOfSync(true)
 {
     setContentsMargins(0,0,0,0);

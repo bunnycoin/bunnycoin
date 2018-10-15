@@ -63,18 +63,18 @@ const QString BitcoinGUI::DEFAULT_WALLET = "~Default";
 
 BitcoinGUI::BitcoinGUI(QWidget *parent) :
     QMainWindow(parent),
-    clientModel(0),
-    encryptWalletAction(0),
-    changePassphraseAction(0),
+    clientModel(nullptr),
+    encryptWalletAction(nullptr),
+    changePassphraseAction(nullptr),
 
-    currentVotesAction(0),
-    currentCandidatesAction(0),
-    howToVoteAction(0),
-    currentResultsAction(0),
-    aboutQtAction(0),
-    trayIcon(0),
-    notificator(0),
-    rpcConsole(0),
+    currentVotesAction(nullptr),
+    currentCandidatesAction(nullptr),
+    howToVoteAction(nullptr),
+    currentResultsAction(nullptr),
+    aboutQtAction(nullptr),
+    trayIcon(nullptr),
+    notificator(nullptr),
+    rpcConsole(nullptr),
     prevBlocks(0)
 {
     restoreWindowGeometry();
@@ -722,7 +722,7 @@ void BitcoinGUI::message(const QString &title, const QString &message, unsigned 
 
         QMessageBox mBox((QMessageBox::Icon)nMBoxIcon, strTitle, message, buttons);
         int r = mBox.exec();
-        if (ret != NULL)
+        if (ret != nullptr)
             *ret = r == QMessageBox::Ok;
     }
     else

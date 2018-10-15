@@ -16,7 +16,7 @@
 QRCodeDialog::QRCodeDialog(const QString &addr, const QString &label, bool enableReq, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QRCodeDialog),
-    model(0),
+    model(nullptr),
     address(addr)
 {
     ui->setupUi(this);

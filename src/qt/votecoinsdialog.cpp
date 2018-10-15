@@ -17,7 +17,7 @@
 VoteCoinsDialog::VoteCoinsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::VoteCoinsDialog),
-    model(0)
+    model(nullptr)
 {
     ui->setupUi(this);
 #ifdef Q_OS_MAC // Icons on push buttons are very uncommon on Mac
@@ -298,7 +298,7 @@ void VoteCoinsDialog::removeEntry(VoteCoinsEntry* entry)
 
 void VoteCoinsDialog::setAddress(const QString &address)
 {
-    VoteCoinsEntry *entry = 0;
+    VoteCoinsEntry *entry = nullptr;
     // Replace the first entry if it is still unused
     if(ui->entries->count() == 1)
     {
@@ -321,7 +321,7 @@ void VoteCoinsDialog::pasteEntry(const SendCoinsRecipient &rv)
     if(!fNewRecipientAllowed)
         return;
 
-    VoteCoinsEntry *entry = 0;
+    VoteCoinsEntry *entry = nullptr;
     // Replace the first entry if it is still unused
     if(ui->entries->count() == 1)
     {

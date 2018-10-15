@@ -21,8 +21,8 @@
 AddressBookPage::AddressBookPage(Mode mode, Tabs tab, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddressBookPage),
-    model(0),
-    optionsModel(0),
+    model(nullptr),
+    optionsModel(nullptr),
     mode(mode),
     tab(tab)
 {

@@ -110,7 +110,7 @@ static std::string Translate(const char* psz)
 static void handleRunawayException(std::exception *e)
 {
     PrintExceptionContinue(e, "Runaway exception");
-    QMessageBox::critical(0, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Bunnycoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
+    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Bunnycoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
     exit(1);
 }
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
     {
         // This message can not be translated, as translation is not initialized yet
         // (which not yet possible because lang=XX can be overridden in bitcoin.conf in the data directory)
-        QMessageBox::critical(0, "Bunnycoin",
+        QMessageBox::critical(nullptr, "Bunnycoin",
                               QString("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(mapArgs["-datadir"])));
         return 1;
     }
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    SplashScreen splash(QPixmap(), 0);
+    SplashScreen splash;
     if (GetBoolArg("-splash", true) && !GetBoolArg("-min"))
     {
 #if MAC_OSX
@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
                     splash.finish(&window);
 
                 ClientModel clientModel(&optionsModel);
-                WalletModel *walletModel = 0;
+                WalletModel *walletModel = nullptr;
                 if(pwalletMain)
                     walletModel = new WalletModel(pwalletMain, &optionsModel);
 
@@ -287,9 +287,9 @@ int main(int argc, char *argv[])
                 app.exec();
 
                 window.hide();
-                window.setClientModel(0);
+                window.setClientModel(nullptr);
                 window.removeAllWallets();
-                guiref = 0;
+                guiref = nullptr;
                 delete walletModel;
             }
             // Shutdown the core and its threads, but don't exit Bitcoin-Qt here
@@ -307,7 +307,7 @@ int main(int argc, char *argv[])
     } catch (std::exception& e) {
         handleRunawayException(&e);
     } catch (...) {
-        handleRunawayException(NULL);
+        handleRunawayException(nullptr);
     }
     return 0;
 }

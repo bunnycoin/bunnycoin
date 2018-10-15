@@ -33,8 +33,8 @@
 WalletView::WalletView(QWidget *parent, BitcoinGUI *_gui):
     QStackedWidget(parent),
     gui(_gui),
-    clientModel(0),
-    walletModel(0)
+    clientModel(nullptr),
+    walletModel(nullptr)
 {
     // Create tabs
     overviewPage = new OverviewPage();
