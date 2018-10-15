@@ -81,31 +81,10 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
     widget->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 }
 
-QList<QPair<QString, QString> > queryItems(const QString& queryData) {
-    QList<QPair<QString, QString> > items;
-
-    int rightCount = queryData.count();
-    if ( queryData[0] == '?' ) {
-        rightCount -= 1;
-    }
-
-    QStringList params = queryData.right(rightCount).split('&');
-
-    for ( int i = 0; i < params.size(); ++i ) {
-        QStringList keyVal = params[i].split('=');
-
-        if ( keyVal.size() > 1 ) {
-            items.append( QPair<QString, QString>(keyVal[0], keyVal[1]));
-        }
-    }
-
-    return items;
-}
-
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no bitcoin URI
-    if(!uri.isValid() || uri.scheme() != QString("bunnycoin"))
+    if(!uri.isValid() || uri.scheme() != QStringLiteral("bunnycoin"))
         return false;
 
     SendCoinsRecipient rv;
@@ -119,11 +98,8 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 #if QT_VERSION < 0x050000
     QList<QPair<QString, QString> > items = uri.queryItems();
 #else
-    // Apparently Qt 5 is broken a *lot*
-//    QUrlQuery uriQuery(uri);
-//    QList<QPair<QString, QString> > items = uriQuery.queryItems();
-    QString uriString = uri.path();
-    QList<QPair<QString, QString> > items = queryItems(uriString.right(uriString.size() - addrlen - 1));
+    QUrlQuery uriQuery(uri);
+    QList<QPair<QString, QString> > items = uriQuery.queryItems();
 #endif
     for (QList<QPair<QString, QString> >::iterator i = items.begin(); i != items.end(); i++)
     {
@@ -167,9 +143,10 @@ bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
     //
     //    Cannot handle this later, because bitcoin:// will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
-    if(uri.startsWith("bunnycoin://"))
+    const auto protocol = QStringLiteral("bunnycoin://");
+    if(uri.startsWith(protocol))
     {
-        uri.replace(0, 11, "bunnycoin:");
+        uri.replace(0, protocol.length(), "bunnycoin:");
     }
     QUrl uriInstance(uri);
     return parseBitcoinURI(uriInstance, out);
