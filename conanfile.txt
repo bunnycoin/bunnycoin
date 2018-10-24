@@ -1,0 +1,13 @@
+[requires]
+boost/1.68.0@conan/stable
+OpenSSL/1.0.2@conan/stable
+berkeleydb/4.8.30@bunnycoin/stable
+miniupnpc/2.1@bunnycoin/stable
+Qt/5.11@bincrafters/stable
+
+[generators]
+cmake
+
+[options]
+*:shared=False
+Qt:shared=True
