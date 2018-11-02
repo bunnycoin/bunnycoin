@@ -1,0 +1,2 @@
+language: cpp
+script: qmake bunnycoin-qt.pro USE_QRCODE=1 USE_UPNP=1 && make
