@@ -10,6 +10,7 @@ win32:DEFINES += _MT WIN32 _WINDOWS
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += exceptions
+CONFIG += c++11
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
