@@ -1,10 +1,10 @@
 dist: trusty
 os: linux
 language: cpp
-
-install: sudo apt-get install libboost-all-dev libdb++-dev libminiupnpc-dev libqrencode-dev libssl-dev
-
+install: sudo apt-get install libboost-all-dev libdb++-dev libminiupnpc-dev libqrencode-dev
+  libssl-dev
 script: qmake bunnycoin-qt.pro USE_QRCODE=1 USE_UPNP=1 && make
-
 notifications:
-    slack: $SLACK_WORKSPACE:$SLACK_KEY
+  slack:
+    rooms:
+      secure: kicq+PakRDw1En6D+PF5EEggzAEWCgANmrEmOfpWXwWtpXaFwL/2C7NuY1Ts5YJ2O/REqxtFcCqohGnL5zPo1pSDWUISFZLbJTkRygYb/2BREHbZh9FKIRCzHIcPfeHGE8eT6rytiSv9NVzMYQB8dhvSvTEUwScJc5IwllR+MP7JOkgGHUk8keoDbDa2Fz/zWLiR4pHgGRAZAlUYsON+6Pc1GXuPIbfDwid/2GxswWw0r9rtKXgRZDmJ76FWJzoazGJdJoLHthPzoeEs0B6kBt2FPJvz7H44kmJgR9x4MrOOMZIBO0jVsyqwcTqlplCodJvkPxg1Z1/nFCWOueErWnztrMKKzLvw5O9exi8kYATL68w6eprVbXhCJ1NCo82kQ1laFMv/jh9RwYtGku/k+Pct17MJwytX4bRvWSiIKUNh+YNxZgCM9jg1dgYUIOeFJenvYImKC23yeRUSCzZsCem/AIq4HRaLN4ZtD6xsaBj+IpFn2l5jy/v0vSWv+WiYb1Io+Rw1GWYvQ4DjCCqlQuyqimWCnitBuAn6fdQg5v8dFIc6A/9WMYFkuhlqlI04dm3MfTcM54v5G4t4v6t1XpsZW0AFriT0+poa0YHdGrM+EAAeyTEmqkiBGsyNP3Ocb/KB/i3kV0VEkDbEfXpSAGjcg88n+Q9T14zNzcL3p80=
