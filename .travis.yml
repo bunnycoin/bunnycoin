@@ -1,5 +1,7 @@
 dist: trusty
 os: linux
-install: true
 language: cpp
+
+install: sudo apt-get install libboost-all-dev libminiupnpc-dev libqrencode-dev libssl-dev
+
 script: qmake bunnycoin-qt.pro USE_QRCODE=1 USE_UPNP=1 && make
