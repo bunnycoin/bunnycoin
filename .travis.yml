@@ -1,9 +1,25 @@
 dist: trusty
 os: linux
 language: cpp
-install: sudo apt-get install libboost-all-dev libdb++-dev libminiupnpc-dev libqrencode-dev
-  libssl-dev
-script: qmake bunnycoin-qt.pro USE_QRCODE=1 USE_UPNP=1 && make
+
+services:
+  - docker
+env:
+  global:
+    - MAKEJOBS=-j3
+    - DOCKER_NAME_TAG=ubuntu:18.04
+    - PACKAGES="libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev qt5-default qtbase5-dev qttools5-dev-tools libdb++-dev libqrencode-dev libssl1.0-dev"
+    - DOCKER_PACKAGES="build-essential libtool autotools-dev automake pkg-config bsdmainutils curl git ca-certificates ccache"
+
+before_install:
+  - set -o errexit; source .travis/build_1_before_install.sh
+install:
+  - set -o errexit; source .travis/build_2_install.sh
+before_script:
+  - set -o errexit; source .travis/build_3_before_script.sh
+script:
+  - if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; source .travis/build_4_script.sh; fi
+
 notifications:
   slack:
     rooms:
