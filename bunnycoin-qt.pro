@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = bunnycoin-qt
 macx:TARGET = "Bunnycoin-Qt"
-VERSION = 1.0.0
+VERSION = 1.1.0
 INCLUDEPATH += src src/json src/qt
 QT += core gui network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -480,3 +480,7 @@ contains(RELEASE, 1) {
 }
 
 system($$QMAKE_LRELEASE -silent $$TRANSLATIONS)
+
+binaries_install.files = $${OUT_PWD}/bunnycoin-qt
+binaries_install.path = $${PREFIX}/bin
+INSTALLS += binaries_install

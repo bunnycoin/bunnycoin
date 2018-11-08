@@ -8,8 +8,8 @@ env:
   global:
     - MAKEJOBS=-j3
     - DOCKER_NAME_TAG=ubuntu:18.04
-    - PACKAGES="libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev qt5-default qtbase5-dev qttools5-dev-tools libdb++-dev libqrencode-dev libssl1.0-dev"
-    - DOCKER_PACKAGES="build-essential libtool autotools-dev automake pkg-config bsdmainutils curl git ca-certificates ccache"
+    - PACKAGES="bash-completion debhelper libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev libdb++-dev libqrencode-dev libssl1.0-dev qt5-default qtbase5-dev qttools5-dev-tools"
+    - DOCKER_PACKAGES="build-essential bsdmainutils curl git ca-certificates"
 
 before_install:
   - set -o errexit; source .travis/build_1_before_install.sh
