@@ -1,11 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Dogecoin
-Comment=Dogecoin P2P Cryptocurrency
-Exec=/usr/bin/dogecoin-qt %u
+Name=Bunnycoin
+Comment=Bunnycoin P2P Cryptocurrency
+Exec=/usr/bin/bunnycoin-qt %u
 Terminal=false
 Type=Application
-Icon=/usr/share/pixmaps/dogecoin128.png
-MimeType=x-scheme-handler/dogecoin;
+Icon=/usr/share/pixmaps/bunnycoin128.png
+MimeType=x-scheme-handler/bunnycoin;
 Categories=Office;
 Name[pl]=bunnycoin-qt.desktop

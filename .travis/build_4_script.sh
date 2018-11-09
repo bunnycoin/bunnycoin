@@ -29,6 +29,10 @@ END_FOLD
 
 BEGIN_FOLD install
 DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME}/bin ./bunnycoin-qt
+DOCKER_EXEC install -m 644 -D ../contrib/debian/bunnycoin-qt.desktop.desktop ../${PACKAGE_NAME}/share/applications/bunnycoin-qt.desktop
+DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/pixmaps ../share/pixmaps/bunnycoin64.png
+DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/pixmaps ../share/pixmaps/bunnycoin128.png
+DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/pixmaps ../share/pixmaps/bunnycoin256.png
 END_FOLD
 
 BEGIN_FOLD package
