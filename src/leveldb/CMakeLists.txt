@@ -81,8 +81,11 @@ endif()
 
 
 target_compile_definitions(leveldb ${COMPILER_DEFINITIONS})
-target_compile_options(leveldb ${COMPILER_OPTIONS})
+
+if (COMPILER_OPTIONS)
+    target_compile_options(leveldb ${COMPILER_OPTIONS})
+endif()
 
 if(LINK_LIBRARIES)
-target_link_libraries(leveldb ${LINK_LIBRARIES})
+    target_link_libraries(leveldb ${LINK_LIBRARIES})
 endif()

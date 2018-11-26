@@ -1,5 +1,10 @@
 add_subdirectory(leveldb)
 
+file(GLOB TS_FILES "qt/locale/*.ts")
+set_source_files_properties(${TS_FILES} PROPERTIES
+    OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/qt/locale")
+qt5_add_translation(QM_FILES ${TS_FILES})
+
 qt5_wrap_ui(UI_SOURCES
     qt/forms/aboutdialog.ui
     qt/forms/addressbookpage.ui
@@ -8,6 +13,7 @@ qt5_wrap_ui(UI_SOURCES
     qt/forms/editaddressdialog.ui
     qt/forms/optionsdialog.ui
     qt/forms/overviewpage.ui
+    qt/forms/qrcodedialog.ui
     qt/forms/rpcconsole.ui
     qt/forms/sendcoinsdialog.ui
     qt/forms/sendcoinsentry.ui
@@ -17,7 +23,7 @@ qt5_wrap_ui(UI_SOURCES
     qt/forms/votecoinsentry.ui
 )
 
-add_executable(bunnycoin-qt
+add_executable(bunnycoin-qt WIN32
     addrman.cpp
     addrman.h
     alert.cpp
@@ -114,6 +120,8 @@ add_executable(bunnycoin-qt
     qt/overviewpage.h
     qt/paymentserver.cpp
     qt/paymentserver.h
+    qt/qrcodedialog.cpp
+    qt/qrcodedialog.h
     qt/qvalidatedlineedit.cpp
     qt/qvalidatedlineedit.h
     qt/qvaluecombobox.cpp
@@ -182,13 +190,49 @@ add_executable(bunnycoin-qt
     ${UI_SOURCES}
 )
 
-target_include_directories(bunnycoin-qt PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src/qt)
-target_link_libraries(bunnycoin-qt PRIVATE leveldb ${CONAN_TARGETS})
+set_property(TARGET bunnycoin-qt PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
+
+target_include_directories(bunnycoin-qt PRIVATE
+    qt
+    ${MINIUPNPC_INC}
+    ${BERKELEYDB_INC}
+)
+
+target_link_libraries(bunnycoin-qt PRIVATE
+    berkeleydb
+    Boost::chrono
+    Boost::filesystem
+    Boost::program_options
+    Boost::system
+    Boost::thread
+    leveldb
+    miniupnpc
+    OpenSSL::SSL
+    qrencode
+    Qt5::Network
+    Qt5::Widgets
+    ZLIB::ZLIB
+    $<$<PLATFORM_ID:Windows>:gdi32>
+    $<$<PLATFORM_ID:Windows>:user32>
+    $<$<PLATFORM_ID:Windows>:uxtheme>
+    $<$<PLATFORM_ID:Windows>:ws2_32>
+    $<$<PLATFORM_ID:Windows>:iphlpapi>
+    $<$<PLATFORM_ID:Windows>:mswsock>
+    $<$<PLATFORM_ID:Windows>:Qt5::QWindowsIntegrationPlugin>
+)
+
 target_compile_definitions(bunnycoin-qt PRIVATE
     QT_GUI
     QT_DEPRECATED_WARNINGS
-    BOOST_THREAD_USE_LIB
-    BOOST_SPIRIT_THREADSAFE
+    MINIUPNP_STATICLIB
+    BUNNYCOIN_STATIC_WINDOWS_PLUGIN
+    USE_QRCODE
+    USE_UPNP
+    $<$<PLATFORM_ID:Windows>:WIN32>
+    $<$<PLATFORM_ID:Windows>:WIN32_LEAN_AND_MEAN>
+    $<$<PLATFORM_ID:Windows>:NOMINMAX>
+    $<$<CXX_COMPILER_ID:MSVC>:_CRT_SECURE_NO_WARNINGS>
+    $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>
 )
 
 if (UNIX)
