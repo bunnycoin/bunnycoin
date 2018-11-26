@@ -4,3 +4,4 @@ src/leveldb/build_config.mk
 src/leveldb/**/*.o
 src/leveldb/**/*.a
 src/qt/locale/*.qm
+.DS_Store
