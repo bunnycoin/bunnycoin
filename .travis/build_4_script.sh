@@ -11,10 +11,8 @@ TRAVIS_COMMIT_LOG=$(git log --format=fuller -1)
 export TRAVIS_COMMIT_LOG
 
 VERSION_NUMBER=`cat bunnycoin-qt.pro | grep VERSION\ = | sed "s/VERSION\ = //g"`
-DEB_DIR=${PACKAGE_NAME}/DEBIAN
-DEB_CONTROL_FILE=${DEB_DIR}/control
 
-if [ "$VERSION_NUMBER" == "v$TRAVIS_BRANCH" ]
+if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
     VERSION_NAME="${VERSION_NUMBER}-1"
 else
@@ -22,6 +20,8 @@ else
 fi
 
 PACKAGE_NAME="bunnycoin-${VERSION_NAME}"
+DEB_DIR=${PACKAGE_NAME}/DEBIAN
+DEB_CONTROL_FILE=${DEB_DIR}/control
 
 mkdir build
 cd build || (echo "could not enter build directory"; exit 1)
