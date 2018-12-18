@@ -239,4 +239,4 @@ if (UNIX)
     target_compile_options(bunnycoin-qt PRIVATE -fPIC)
 endif()
 
-install(TARGETS bunnycoin-qt)
+install(TARGETS bunnycoin-qt DESTINATION .)
