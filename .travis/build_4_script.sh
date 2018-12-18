@@ -44,9 +44,9 @@ if [[ $HOST = *-mingw32 ]]; then
     END_FOLD
 
     BEGIN_FOLD external dependencies
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/i686-w64-mingw32/lib/libwinpthread-1.dll
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/x86_64-w64-mingw32/7.3-win32/libgcc_s_seh-1.dll
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/x86_64-w64-mingw32/7.3-win32/libstdc++-6.dll
+    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/${HOST}/lib/libwinpthread-1.dll
+    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/libgcc_s_seh-1.dll
+    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/libstdc++-6.dll
     END_FOLD
 
     BEGIN_FOLD package
