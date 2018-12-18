@@ -30,13 +30,13 @@ if [[ $HOST = *-mingw32 ]]; then
     fi
 
     BEGIN_FOLD dependencies
-    DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=bunnycoin-deps-20181126-x86_64-w64-mingw32.tar.xz -nv -O dependencies.tar.xz
+    DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=bunnycoin-deps-20181126-${HOST}.tar.xz -nv -O dependencies.tar.xz
     DOCKER_EXEC tar -xf dependencies.tar.xz
-    DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=x86_64-w64-mingw32-toolchain.cmake -nv -O x86_64-w64-mingw32-toolchain.cmake
+    DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=${HOST}-toolchain.cmake -nv -O ${HOST}-toolchain.cmake
     END_FOLD
 
     BEGIN_FOLD cmake
-    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=x86_64-w64-mingw32-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_NAME} ..
+    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_NAME} ..
     END_FOLD
 
     BEGIN_FOLD build
