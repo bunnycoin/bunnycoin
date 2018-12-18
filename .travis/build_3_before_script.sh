@@ -9,3 +9,6 @@ export LC_ALL=C.UTF-8
 
 DOCKER_EXEC echo \> \$HOME/.bunnycoin # Make sure default datadir does not exist and is never read by creating a dummy file
 
+if [[ $HOST = *-mingw32 ]]; then
+  DOCKER_EXEC update-alternatives --set $HOST-g++ \$\(which $HOST-g++-posix\)
+fi
