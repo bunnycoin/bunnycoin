@@ -26,7 +26,7 @@ jobs:
       - PACKAGES="bash-completion debhelper libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev libdb++-dev libqrencode-dev libssl1.0-dev qt5-default qtbase5-dev qttools5-dev-tools"
     - env:
       - HOST="x86_64-w64-mingw32"
-      - PACKAGES="g++-mingw-w64-x86-64 wget xz-utils cmake ninja-build"
+      - PACKAGES="g++-mingw-w64-x86-64 wget xz-utils cmake ninja-build zip"
 
 notifications:
   slack:

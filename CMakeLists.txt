@@ -78,3 +78,5 @@ set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
 )
 
 add_subdirectory(src)
+
+install(FILES release/bunnycoin.conf DESTINATION .)
