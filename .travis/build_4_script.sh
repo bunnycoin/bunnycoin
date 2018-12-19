@@ -25,8 +25,13 @@ cd build || (echo "could not enter build directory"; exit 1)
 if [[ $HOST = *-mingw32 ]]; then
     if [[ $HOST = x86_64-w64-mingw32 ]]; then
         PACKAGE_NAME="bunnycoin-windows-64bit-${VERSION_NAME}"
-    else
+        LIBGCC_DLL="libgcc_s_seh-1.dll"
+    elif [[ $HOST = i686-w64-mingw32 ]]; then
         PACKAGE_NAME="bunnycoin-windows-32bit-${VERSION_NAME}"
+        LIBGCC_DLL="libgcc_s_sjlj-1.dll"
+    else
+        echo "unsupported architecture $HOST"
+        exit 1
     fi
 
     BEGIN_FOLD dependencies
@@ -45,7 +50,7 @@ if [[ $HOST = *-mingw32 ]]; then
 
     BEGIN_FOLD external dependencies
     DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/${HOST}/lib/libwinpthread-1.dll
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/libgcc_s_seh-1.dll
+    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/${LIBGCC_DLL}
     DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/libstdc++-6.dll
     END_FOLD
 
