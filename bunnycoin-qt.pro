@@ -148,6 +148,8 @@ macx: {
 
     QMAKE_CFLAGS_THREAD += -pthread
     QMAKE_CXXFLAGS_THREAD += -pthread
+
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
 }
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
