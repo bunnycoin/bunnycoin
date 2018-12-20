@@ -209,7 +209,6 @@ target_link_libraries(bunnycoin-qt PRIVATE
     qrencode
     Qt5::Network
     Qt5::Widgets
-    ZLIB::ZLIB
     $<$<PLATFORM_ID:Windows>:gdi32>
     $<$<PLATFORM_ID:Windows>:user32>
     $<$<PLATFORM_ID:Windows>:uxtheme>

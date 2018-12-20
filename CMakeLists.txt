@@ -32,7 +32,6 @@ endif()
 
 find_package(Boost COMPONENTS chrono filesystem program_options system thread REQUIRED)
 find_package(Qt5 COMPONENTS Gui LinguistTools Network Widgets REQUIRED)
-find_package(ZLIB REQUIRED)
 
 if(OVERRIDE_OPENSSL_CRYPTO_LIBRARY AND OVERRIDE_OPENSSL_SSL_LIBRARY AND OVERRIDE_OPENSSL_INCLUDE_DIR)
     add_library(OpenSSL::Crypto ${STATIC_OR_SHARED} IMPORTED)
@@ -106,6 +105,8 @@ else()
 endif()
 
 if(STATIC_BUILD)
+    find_package(ZLIB REQUIRED)
+
     find_library(QTHARFBUZZ_LIB NAMES qtharfbuzz)
     add_library(qtharfbuzz STATIC IMPORTED)
     set_property(TARGET qtharfbuzz PROPERTY IMPORTED_LOCATION ${QTHARFBUZZ_LIB})
@@ -146,7 +147,7 @@ set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
     $<$<BOOL:${STATIC_BUILD}>:qtharfbuzz>
     $<$<BOOL:${STATIC_BUILD}>:qtlibpng>
     $<$<BOOL:${STATIC_BUILD}>:qtpcre2>
-    ZLIB::ZLIB
+    $<$<BOOL:${STATIC_BUILD}>:ZLIB::ZLIB>
     $<$<PLATFORM_ID:Windows>:version>
     $<$<PLATFORM_ID:Windows>:winmm>
 )
