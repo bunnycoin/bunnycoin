@@ -194,8 +194,6 @@ set_property(TARGET bunnycoin-qt PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
 
 target_include_directories(bunnycoin-qt PRIVATE
     qt
-    ${MINIUPNPC_INC}
-    ${BERKELEYDB_INC}
 )
 
 target_link_libraries(bunnycoin-qt PRIVATE
@@ -211,7 +209,6 @@ target_link_libraries(bunnycoin-qt PRIVATE
     qrencode
     Qt5::Network
     Qt5::Widgets
-    ZLIB::ZLIB
     $<$<PLATFORM_ID:Windows>:gdi32>
     $<$<PLATFORM_ID:Windows>:user32>
     $<$<PLATFORM_ID:Windows>:uxtheme>
@@ -224,13 +221,13 @@ target_link_libraries(bunnycoin-qt PRIVATE
 target_compile_definitions(bunnycoin-qt PRIVATE
     QT_GUI
     QT_DEPRECATED_WARNINGS
-    MINIUPNP_STATICLIB
-    BUNNYCOIN_STATIC_WINDOWS_PLUGIN
     USE_QRCODE
     USE_UPNP
     $<$<PLATFORM_ID:Windows>:WIN32>
     $<$<PLATFORM_ID:Windows>:WIN32_LEAN_AND_MEAN>
     $<$<PLATFORM_ID:Windows>:NOMINMAX>
+    $<$<PLATFORM_ID:Windows>:BUNNYCOIN_STATIC_WINDOWS_PLUGIN>
+    $<$<BOOL:${STATIC_BUILD}>:MINIUPNP_STATICLIB>
     $<$<CXX_COMPILER_ID:MSVC>:_CRT_SECURE_NO_WARNINGS>
     $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>
 )
@@ -239,4 +236,8 @@ if (UNIX)
     target_compile_options(bunnycoin-qt PRIVATE -fPIC)
 endif()
 
-install(TARGETS bunnycoin-qt DESTINATION .)
+if (WIN32)
+    install(TARGETS bunnycoin-qt DESTINATION .)
+elseif (UNIX)
+    install(TARGETS bunnycoin-qt DESTINATION bin)
+endif()
