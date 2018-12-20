@@ -24,11 +24,9 @@ cd build || (echo "could not enter build directory"; exit 1)
 
 if [[ $HOST = *-mingw32 ]]; then
     if [[ $HOST = x86_64-w64-mingw32 ]]; then
-        PACKAGE_NAME="bunnycoin-windows-64bit-${VERSION_NAME}"
-        LIBGCC_DLL="libgcc_s_seh-1.dll"
+        PACKAGE_DIR="bunnycoin-windows-64bit-${VERSION_NAME}"
     elif [[ $HOST = i686-w64-mingw32 ]]; then
-        PACKAGE_NAME="bunnycoin-windows-32bit-${VERSION_NAME}"
-        LIBGCC_DLL="libgcc_s_sjlj-1.dll"
+        PACKAGE_DIR="bunnycoin-windows-32bit-${VERSION_NAME}"
     else
         echo "unsupported architecture $HOST"
         exit 1
@@ -41,7 +39,7 @@ if [[ $HOST = *-mingw32 ]]; then
     END_FOLD
 
     BEGIN_FOLD cmake
-    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_NAME} -DSTATIC_BUILD=ON ..
+    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DSTATIC_BUILD=ON ..
     END_FOLD
 
     BEGIN_FOLD build
@@ -53,20 +51,15 @@ if [[ $HOST = *-mingw32 ]]; then
     END_FOLD
 
     BEGIN_FOLD package
+    PACKAGE_FILE=${PACKAGE_DIR}.zip
     cd ..
-    zip -r ${PACKAGE_NAME}.zip ${PACKAGE_NAME}
-    END_FOLD
-
-    BEGIN_FOLD upload
-    curl -T ${PACKAGE_NAME}.zip -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_NAME}.zip
+    zip -r ${PACKAGE_FILE} ${PACKAGE_DIR}
     END_FOLD
 else
-    PACKAGE_NAME="bunnycoin-${VERSION_NAME}"
-    DEB_DIR=${PACKAGE_NAME}/DEBIAN
-    DEB_CONTROL_FILE=${DEB_DIR}/control
+    PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
 
     BEGIN_FOLD cmake
-    DOCKER_EXEC cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_NAME}/usr ..
+    DOCKER_EXEC cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR}/usr ..
     END_FOLD
 
     BEGIN_FOLD build
@@ -78,16 +71,19 @@ else
     END_FOLD
 
     BEGIN_FOLD package
+    DEB_DIR=${PACKAGE_DIR}/DEBIAN
+    DEB_CONTROL_FILE=${DEB_DIR}/control
+    PACKAGE_FILE=${PACKAGE_DIR}.deb
     cd ..
     DOCKER_EXEC mkdir -p ${DEB_DIR}
     DOCKER_EXEC cp .travis/deb-control-bionic ${DEB_CONTROL_FILE}
     DEB_BUILD_ARCH=`DOCKER_EXEC dpkg-architecture -q DEB_BUILD_ARCH`
     DOCKER_EXEC sed "s/DEB_BUILD_ARCH/${DEB_BUILD_ARCH}/g" -i ${DEB_CONTROL_FILE}
     DOCKER_EXEC sed "s/DEB_VERSION/${VERSION_NAME}/g" -i ${DEB_CONTROL_FILE}
-    DOCKER_EXEC dpkg-deb --build ${PACKAGE_NAME}
-    END_FOLD
-
-    BEGIN_FOLD upload
-    curl -T ${PACKAGE_NAME}.deb -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_NAME}.deb
+    DOCKER_EXEC dpkg-deb --build ${PACKAGE_DIR}
     END_FOLD
 fi
+
+BEGIN_FOLD upload
+curl -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
+END_FOLD
