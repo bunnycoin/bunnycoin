@@ -10,7 +10,7 @@ export LC_ALL=C.UTF-8
 TRAVIS_COMMIT_LOG=$(git log --format=fuller -1)
 export TRAVIS_COMMIT_LOG
 
-VERSION_NUMBER=`cat bunnycoin-qt.pro | grep VERSION\ = | sed "s/VERSION\ = //g"`
+VERSION_NUMBER=`cat CMakeLists.txt | grep VERSION| sed "s/\s*VERSION\s*//g"`
 
 if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
@@ -45,13 +45,11 @@ if [[ $HOST = *-mingw32 ]]; then
     END_FOLD
 
     BEGIN_FOLD build
-    DOCKER_EXEC ninja $MAKEJOBS install
+    DOCKER_EXEC ninja
     END_FOLD
 
-    BEGIN_FOLD external dependencies
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/${HOST}/lib/libwinpthread-1.dll
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/${LIBGCC_DLL}
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME} /usr/lib/gcc/${HOST}/7.3-win32/libstdc++-6.dll
+    BEGIN_FOLD install
+    DOCKER_EXEC ninja install
     END_FOLD
 
     BEGIN_FOLD package
@@ -67,21 +65,16 @@ else
     DEB_DIR=${PACKAGE_NAME}/DEBIAN
     DEB_CONTROL_FILE=${DEB_DIR}/control
 
-    BEGIN_FOLD qmake
-    DOCKER_EXEC qmake .. USE_DBUS=1 USE_QRCODE=1 USE_UPNP=1 PREFIX=$PACKAGE_NAME
+    BEGIN_FOLD cmake
+    DOCKER_EXEC cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_NAME}/usr ..
     END_FOLD
 
     BEGIN_FOLD build
-    DOCKER_EXEC make $MAKEJOBS
+    DOCKER_EXEC ninja
     END_FOLD
 
     BEGIN_FOLD install
-    DOCKER_EXEC install -m 755 -D -t ../${PACKAGE_NAME}/bin ./bunnycoin-qt
-    DOCKER_EXEC install -m 644 -D ../contrib/debian/bunnycoin-qt.desktop.desktop ../${PACKAGE_NAME}/share/applications/bunnycoin-qt.desktop
-    DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/pixmaps ../share/pixmaps/bunnycoin64.png
-    DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/pixmaps ../share/pixmaps/bunnycoin128.png
-    DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/pixmaps ../share/pixmaps/bunnycoin256.png
-    DOCKER_EXEC install -m 644 -D -t ../${PACKAGE_NAME}/share/bunnycoin ../release/bunnycoin.conf
+    DOCKER_EXEC ninja install
     END_FOLD
 
     BEGIN_FOLD package
