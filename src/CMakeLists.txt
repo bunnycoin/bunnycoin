@@ -23,7 +23,7 @@ qt5_wrap_ui(UI_SOURCES
     qt/forms/votecoinsentry.ui
 )
 
-add_executable(bunnycoin-qt WIN32
+add_executable(bunnycoin-qt WIN32 MACOSX_BUNDLE
     addrman.cpp
     addrman.h
     alert.cpp
@@ -108,6 +108,12 @@ add_executable(bunnycoin-qt WIN32
     qt/guiconstants.h
     qt/guiutil.cpp
     qt/guiutil.h
+    $<$<PLATFORM_ID:Darwin>:
+        qt/macdockiconhandler.h
+        qt/macdockiconhandler.mm
+        qt/macnotificationhandler.h
+        qt/macnotificationhandler.mm
+    >
     qt/monitoreddatamapper.cpp
     qt/monitoreddatamapper.h
     qt/notificator.cpp
@@ -209,6 +215,10 @@ target_link_libraries(bunnycoin-qt PRIVATE
     qrencode
     Qt5::Network
     Qt5::Widgets
+    ${MACOSX_FRAMEWORK_APP_KIT}
+    ${MACOSX_FRAMEWORK_APPLICATION_SERVICES}
+    ${MACOSX_FRAMEWORK_CORE_SERVICES}
+    ${MACOSX_FRAMEWORK_FOUNDATION}
     $<$<PLATFORM_ID:Windows>:gdi32>
     $<$<PLATFORM_ID:Windows>:user32>
     $<$<PLATFORM_ID:Windows>:uxtheme>
@@ -223,6 +233,10 @@ target_compile_definitions(bunnycoin-qt PRIVATE
     QT_DEPRECATED_WARNINGS
     USE_QRCODE
     USE_UPNP
+    $<$<PLATFORM_ID:Darwin>:MAC_OSX>
+    $<$<PLATFORM_ID:Darwin>:Q_OS_MAC>
+    $<$<PLATFORM_ID:Linux>:LINUX>
+    $<$<PLATFORM_ID:Linux>:_FILE_OFFSET_BITS=64> # _FILE_OFFSET_BITS=64 lets 32-bit fopen transparently support large files.
     $<$<PLATFORM_ID:Windows>:WIN32>
     $<$<PLATFORM_ID:Windows>:WIN32_LEAN_AND_MEAN>
     $<$<PLATFORM_ID:Windows>:NOMINMAX>
@@ -232,11 +246,18 @@ target_compile_definitions(bunnycoin-qt PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>
 )
 
-if (UNIX)
-    target_compile_options(bunnycoin-qt PRIVATE -fPIC)
+target_compile_options(bunnycoin-qt PRIVATE
+    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:-fPIC>
+)
+
+if (APPLE)
+    set_target_properties(bunnycoin-qt PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist"
+    )
 endif()
 
-if (WIN32)
+if (WIN32 OR APPLE)
     install(TARGETS bunnycoin-qt DESTINATION .)
 elseif (UNIX)
     install(TARGETS bunnycoin-qt DESTINATION bin)

@@ -1,16 +1,4 @@
 
-if(WIN32)
-    set(PLATFORM_SOURCES
-        port/port_win.cc
-        util/env_win.cc
-    )
-elseif(UNIX)
-    set(PLATFORM_SOURCES
-        port/port_posix.cc
-        util/env_posix.cc
-    )
-endif()
-
 add_library(leveldb
     db/builder.cc
     db/c.cc
@@ -50,7 +38,10 @@ add_library(leveldb
     util/logging.cc
     util/options.cc
     util/status.cc
-    ${PLATFORM_SOURCES}
+    $<$<PLATFORM_ID:Windows>:port/port_win.cc>
+    $<$<PLATFORM_ID:Windows>:util/env_win.cc>
+    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:port/port_posix.cc>
+    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:util/env_posix.cc>
 )
 
 target_include_directories(leveldb
@@ -58,34 +49,21 @@ target_include_directories(leveldb
     SYSTEM INTERFACE helpers
 )
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(COMPILER_OPTIONS PRIVATE -fno-builtin-memcmp)
-endif()
+target_compile_definitions(leveldb PRIVATE
+    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:LEVELDB_PLATFORM_POSIX>
+    $<$<PLATFORM_ID:Darwin>:OS_MACOSX>
+    $<$<PLATFORM_ID:Linux>:OS_LINUX>
+    $<$<PLATFORM_ID:Windows>:OS_WINDOWS>
+    $<$<PLATFORM_ID:Windows>:_REENTRANT>
+    $<$<PLATFORM_ID:Windows>:LEVELDB_PLATFORM_WINDOWS>
+    $<$<PLATFORM_ID:Windows>:WINVER=0x0500>
+)
 
-if(WIN32)
-    set(COMPILER_DEFINITIONS PRIVATE
-        _REENTRANT
-        OS_WINDOWS
-        LEVELDB_PLATFORM_WINDOWS
-        WINVER=0x0500
-    )
+target_compile_options(leveldb PRIVATE
+    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:-fPIC>
+    $<$<CXX_COMPILER_ID:GNU>:-fno-builtin-memcmp>
+)
 
-    set(LINK_LIBRARIES INTERFACE shlwapi)
-elseif(UNIX)
-    set(COMPILER_DEFINITIONS PRIVATE
-        OS_LINUX
-        LEVELDB_PLATFORM_POSIX
-    )
-    set(COMPILER_OPTIONS ${COMPILER_OPTIONS} -fPIC)
-endif()
-
-
-target_compile_definitions(leveldb ${COMPILER_DEFINITIONS})
-
-if (COMPILER_OPTIONS)
-    target_compile_options(leveldb ${COMPILER_OPTIONS})
-endif()
-
-if(LINK_LIBRARIES)
-    target_link_libraries(leveldb ${LINK_LIBRARIES})
-endif()
+target_link_libraries(leveldb INTERFACE
+    $<$<PLATFORM_ID:Windows>:shlwapi>
+)
