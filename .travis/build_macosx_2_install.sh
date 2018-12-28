@@ -7,5 +7,4 @@
 
 export LC_ALL=C.UTF-8
 
-travis_retry brew update
-travis_retry brew install $BREW_PACKAGES
+brew install $BREW_PACKAGES
