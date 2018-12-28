@@ -7,4 +7,4 @@
 
 export LC_ALL=C.UTF-8
 
-brew install $BREW_PACKAGES
+brew install $BREW_PACKAGES || true
