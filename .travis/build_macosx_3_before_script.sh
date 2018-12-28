@@ -7,4 +7,4 @@
 
 export LC_ALL=C.UTF-8
 
-DOCKER_EXEC echo \> \$HOME/.bunnycoin # Make sure default datadir does not exist and is never read by creating a dummy file
+echo \> \$HOME/.bunnycoin # Make sure default datadir does not exist and is never read by creating a dummy file

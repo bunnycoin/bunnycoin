@@ -25,15 +25,15 @@ cd build || (echo "could not enter build directory"; exit 1)
 PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
 
 BEGIN_FOLD cmake
-DOCKER_EXEC cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/openssl ..
+cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/openssl ..
 END_FOLD
 
 BEGIN_FOLD build
-DOCKER_EXEC ninja
+ninja
 END_FOLD
 
 BEGIN_FOLD install
-DOCKER_EXEC ninja install
+ninja install
 END_FOLD
 
 BEGIN_FOLD upload
