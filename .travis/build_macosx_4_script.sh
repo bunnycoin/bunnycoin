@@ -10,7 +10,7 @@ export LC_ALL=C.UTF-8
 TRAVIS_COMMIT_LOG=$(git log --format=fuller -1)
 export TRAVIS_COMMIT_LOG
 
-VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/\s+VERSION\s+([[:digit:]])\s*/\1/g" | sed 's/\r//'`
+VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/^    VERSION ([0-9]+\.[0-9]+\.[0-9]+)/\1/g" | tr -d '\r'`
 
 if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
