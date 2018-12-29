@@ -7,11 +7,14 @@
 
 export LC_ALL=C.UTF-8
 
+echo "Getting git log"
 TRAVIS_COMMIT_LOG=$(git log --format=fuller -1)
 export TRAVIS_COMMIT_LOG
 
+echo "Getting version number"
 VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/^    VERSION ([0-9]+\.[0-9]+\.[0-9]+)/\1/g" | tr -d '\r'`
 
+echo "Getting version name"
 if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
     VERSION_NAME="${VERSION_NUMBER}"
@@ -19,11 +22,14 @@ else
     VERSION_NAME="${VERSION_NUMBER}-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}"
 fi
 
+echo "Creating build folder"
 mkdir build
 cd build || (echo "could not enter build directory"; exit 1)
 
+echo "Package dir variable"
 PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
 
+echo "Invoking cmake"
 BEGIN_FOLD cmake
 cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/openssl ..
 END_FOLD
