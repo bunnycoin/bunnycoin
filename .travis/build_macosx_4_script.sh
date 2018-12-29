@@ -25,9 +25,13 @@ else
 fi
 echo "VERSION_NAME=${VERSION_NAME}"
 
-echo "Creating build folder"
+BEGIN_FOLD "mkdir build"
 mkdir build
+END_FOLD
+
+BEGIN_FOLD "cd build"
 cd build
+END_FOLD
 
 echo "Package dir variable"
 PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
