@@ -35,6 +35,7 @@ jobs:
       - PACKAGES="g++-mingw-w64-i686 mingw-w64-i686-dev wget xz-utils cmake ninja-build zip"
     - os: osx
       osx_image: xcode10
+      language: cpp
       install: set -o errexit; source .travis/build_macosx_2_install.sh
       before_script: set -o errexit; source .travis/build_macosx_3_before_script.sh
       script: if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; source .travis/build_macosx_4_script.sh; fi
