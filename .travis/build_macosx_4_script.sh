@@ -43,7 +43,11 @@ ls /usr/local/lib
 
 echo "Invoking cmake"
 BEGIN_FOLD cmake
-cmake -H. -Bbuild -GNinja -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+cmake -H. -Bbuild -GNinja \
+    -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} \
+    -DCMAKE_PREFIX_PATH=/usr/local/opt/qt \
+    -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
+    -DBOOST_ROOT=/usr/local/opt/boost
 END_FOLD
 
 BEGIN_FOLD build
