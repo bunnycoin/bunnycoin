@@ -1,34 +1,43 @@
-dist: trusty
-os: linux
-language: cpp
 
-services:
-  - docker
 env:
   global:
     - DOCKER_NAME_TAG=ubuntu:18.04
     - DOCKER_PACKAGES="build-essential bsdmainutils curl git ca-certificates"
 
-before_install:
-  - set -o errexit; source .travis/build_1_before_install.sh
-install:
-  - set -o errexit; source .travis/build_2_install.sh
-before_script:
-  - set -o errexit; source .travis/build_3_before_script.sh
-script:
-  - if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; source .travis/build_4_script.sh; fi
+before_install: set -o errexit; source .travis/build_1_before_install.sh
+install: set -o errexit; source .travis/build_linux_2_install.sh
+before_script: set -o errexit; source .travis/build_linux_3_before_script.sh
+script: if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; source .travis/build_linux_4_script.sh; fi
 
 jobs:
   include:
-    - env:
+    - os: linux
+      dist: trusty
+      language: cpp
+      services: docker
+      env:
       - HOST=x86_64-unknown-linux-gnu
       - PACKAGES="bash-completion debhelper libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev libdb++-dev libqrencode-dev libssl1.0-dev qt5-default qtbase5-dev qttools5-dev qttools5-dev-tools cmake ninja-build"
-    - env:
+    - os: linux
+      dist: trusty
+      language: cpp
+      services: docker
+      env:
       - HOST="x86_64-w64-mingw32"
       - PACKAGES="g++-mingw-w64-x86-64 wget xz-utils cmake ninja-build zip"
-    - env:
+    - os: linux
+      dist: trusty
+      language: cpp
+      services: docker
+      env:
       - HOST="i686-w64-mingw32"
       - PACKAGES="g++-mingw-w64-i686 mingw-w64-i686-dev wget xz-utils cmake ninja-build zip"
+    - os: osx
+      osx_image: xcode10
+      language: cpp
+      install: set -o errexit; source .travis/build_macosx_2_install.sh
+      before_script: set -o errexit; source .travis/build_macosx_3_before_script.sh
+      script: if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; source .travis/build_macosx_4_script.sh; fi
 
 notifications:
   slack:
