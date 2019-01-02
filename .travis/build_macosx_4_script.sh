@@ -25,31 +25,23 @@ else
 fi
 echo "VERSION_NAME=${VERSION_NAME}"
 
-BEGIN_FOLD "mkdir build"
-mkdir build
+echo "Package dir variable"
+PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
+echo "PACKAGE_DIR=${PACKAGE_DIR}"
+
+echo "Invoking cmake"
+BEGIN_FOLD cmake
+cmake -H. -Bbuild -GNinja -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/openssl
 END_FOLD
 
-BEGIN_FOLD "cd build"
-cd build
+BEGIN_FOLD build
+cmake --build build
 END_FOLD
 
-#echo "Package dir variable"
-#PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
-#echo "PACKAGE_DIR=${PACKAGE_DIR}"
+BEGIN_FOLD install
+cmake --build build --target install
+END_FOLD
 
-#echo "Invoking cmake"
-#BEGIN_FOLD cmake
-#cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/openssl ..
-#END_FOLD
-
-#BEGIN_FOLD build
-#ninja
-#END_FOLD
-
-#BEGIN_FOLD install
-#ninja install
-#END_FOLD
-
-#BEGIN_FOLD upload
-#curl -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
-#END_FOLD
+BEGIN_FOLD upload
+curl -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
+END_FOLD
