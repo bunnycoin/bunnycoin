@@ -29,9 +29,21 @@ echo "Package dir variable"
 PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
 echo "PACKAGE_DIR=${PACKAGE_DIR}"
 
+echo "ls /usr/local:"
+ls /usr/local
+
+echo "ls /usr/local/opt:"
+ls /usr/local/opt
+
+echo "ls /usr/local/opt/boost:"
+ls /usr/local/opt/boost
+
+echo "ls /usr/local/lib:"
+ls /usr/local/lib
+
 echo "Invoking cmake"
 BEGIN_FOLD cmake
-cmake -H. -Bbuild -GNinja -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/openssl
+cmake -H. -Bbuild -GNinja -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} -DCMAKE_PREFIX_PATH=/usr/local/opt/qt -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
 END_FOLD
 
 BEGIN_FOLD build
