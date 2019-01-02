@@ -171,7 +171,7 @@ set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
 
 add_subdirectory(src)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     install(FILES release/bunnycoin.conf DESTINATION .)
     include(InstallRequiredSystemLibraries)
 elseif (UNIX AND NOT APPLE)

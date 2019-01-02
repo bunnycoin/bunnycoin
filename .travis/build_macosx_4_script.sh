@@ -7,12 +7,9 @@
 
 export LC_ALL=C.UTF-8
 
-echo "Getting git log"
 TRAVIS_COMMIT_LOG=$(git log --format=fuller -1)
 export TRAVIS_COMMIT_LOG
-echo "TRAVIS_COMMIT_LOG=${TRAVIS_COMMIT_LOG}"
 
-echo "Getting version number"
 VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/^    VERSION ([0-9]+\.[0-9]+\.[0-9]+)/\1/g" | tr -d '\r'`
 echo "VERSION_NUMBER=${VERSION_NUMBER}"
 
@@ -25,21 +22,8 @@ else
 fi
 echo "VERSION_NAME=${VERSION_NAME}"
 
-echo "Package dir variable"
 PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
 echo "PACKAGE_DIR=${PACKAGE_DIR}"
-
-echo "ls /usr/local:"
-ls /usr/local
-
-echo "ls /usr/local/opt:"
-ls /usr/local/opt
-
-echo "ls /usr/local/opt/boost:"
-ls /usr/local/opt/boost
-
-echo "ls /usr/local/lib:"
-ls /usr/local/lib
 
 echo "Invoking cmake"
 BEGIN_FOLD cmake
@@ -56,6 +40,15 @@ END_FOLD
 
 BEGIN_FOLD install
 cmake --build build --target install
+END_FOLD
+
+BEGIN_FOLD deploy
+/usr/local/opt/qt/bin/macdeployqt ./${PACKAGE_DIR}/bunnycoin-qt.app -dmg
+END_FOLD
+
+BEGIN_FOLD package
+PACKAGE_FILE=${PACKAGE_DIR}.zip
+zip -r ${PACKAGE_FILE} ${PACKAGE_DIR} 
 END_FOLD
 
 BEGIN_FOLD upload
