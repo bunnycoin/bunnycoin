@@ -22,7 +22,7 @@ else
 fi
 echo "VERSION_NAME=${VERSION_NAME}"
 
-PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
+PACKAGE_DIR="bunnycoin-macosx-${VERSION_NAME}"
 echo "PACKAGE_DIR=${PACKAGE_DIR}"
 
 echo "Invoking cmake"
@@ -52,5 +52,5 @@ zip -r ${PACKAGE_FILE} ${PACKAGE_DIR}
 END_FOLD
 
 BEGIN_FOLD upload
-curl -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
+curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
 END_FOLD
