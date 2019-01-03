@@ -140,6 +140,10 @@ if(STATIC_BUILD)
     find_library(QTPCRE2_LIB NAMES qtpcre2)
     add_library(qtpcre2 STATIC IMPORTED)
     set_property(TARGET qtpcre2 PROPERTY IMPORTED_LOCATION ${QTPCRE2_LIB})
+
+    set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+        $<$<PLATFORM_ID:Windows>:ws2_32>
+	)
 endif()
 
 if(WIN32)
