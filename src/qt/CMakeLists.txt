@@ -54,12 +54,6 @@ add_executable(bunnycoin-qt WIN32 MACOSX_BUNDLE
     guiconstants.h
     guiutil.cpp
     guiutil.h
-    $<$<PLATFORM_ID:Darwin>:
-        macdockiconhandler.h
-        macdockiconhandler.mm
-        macnotificationhandler.h
-        macnotificationhandler.mm
-    >
     monitoreddatamapper.cpp
     monitoreddatamapper.h
     notificator.cpp
@@ -114,6 +108,13 @@ add_executable(bunnycoin-qt WIN32 MACOSX_BUNDLE
     walletview.cpp
     walletview.h
     ${UI_SOURCES}
+    $<$<PLATFORM_ID:Darwin>:
+        macdockiconhandler.h
+        macdockiconhandler.mm
+        macnotificationhandler.h
+        macnotificationhandler.mm
+        ../mac/artwork/Bunnycoin.icns
+    >
 )
 
 set_property(TARGET bunnycoin-qt PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
@@ -138,8 +139,13 @@ target_compile_definitions(bunnycoin-qt PRIVATE
 
 if (APPLE)
     set_target_properties(bunnycoin-qt PROPERTIES
-        MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/../mac/Info.plist"
+        MACOSX_BUNDLE_BUNDLE_NAME Bunnycoin-Qt
+        MACOSX_BUNDLE_COPYRIGHT "© Bunnycoin"
+        MACOSX_BUNDLE_GUI_IDENTIFIER com.bunnycoin.wallet-qt
+        MACOSX_BUNDLE_ICON_FILE Bunnycoin.icns
+    )
+    set_source_files_properties(../mac/artwork/Bunnycoin.icns PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
     )
 endif()
 
