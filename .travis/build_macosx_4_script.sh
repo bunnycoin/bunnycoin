@@ -42,13 +42,16 @@ BEGIN_FOLD install
 cmake --build build --target install
 END_FOLD
 
-BEGIN_FOLD deploy
-/usr/local/opt/qt/bin/macdeployqt ./${PACKAGE_DIR}/bunnycoin-qt.app -dmg
-END_FOLD
+for app in ./${PACKAGE_DIR}/*.app
+do
+    BEGIN_FOLD deploy $(basename $app)
+    /usr/local/opt/qt/bin/macdeployqt ${app} -dmg && rm -r ${app}
+    END_FOLD
+done
 
 BEGIN_FOLD package
 PACKAGE_FILE=${PACKAGE_DIR}.zip
-zip -r ${PACKAGE_FILE} ${PACKAGE_DIR} 
+zip -r ${PACKAGE_FILE} ${PACKAGE_DIR}
 END_FOLD
 
 BEGIN_FOLD upload
