@@ -81,6 +81,9 @@ set_target_properties(miniupnpc PROPERTIES
     IMPORTED_LOCATION ${MINIUPNPC_LIB}
     INTERFACE_INCLUDE_DIRECTORIES "${MINIUPNPC_INC}"
 )
+set_property(TARGET miniupnpc APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+    $<$<PLATFORM_ID:Windows>:iphlpapi>
+)
 
 if(NOT MINIUPNPC_INC)
     message(FATAL_ERROR "cannot find miniupnpc include directory")
