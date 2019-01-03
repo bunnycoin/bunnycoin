@@ -110,10 +110,6 @@ target_compile_definitions(core
         $<$<PLATFORM_ID:Linux>:_FILE_OFFSET_BITS=64> # _FILE_OFFSET_BITS=64 lets 32-bit fopen transparently support large files.
 )
 
-target_compile_options(core PUBLIC
-    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:-fPIC>
-)
-
 add_library(core-gui STATIC
     init.cpp
     init.h
