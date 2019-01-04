@@ -40,7 +40,7 @@ target_link_libraries(test-core PRIVATE
 )
 
 target_compile_definitions(test-core PRIVATE
-    BOOST_TEST_DYN_LINK
+    $<$<NOT:$<BOOL:${STATIC_BUILD}>>:BOOST_TEST_DYN_LINK>
 )
 
 add_test(NAME test-core COMMAND test-core)
