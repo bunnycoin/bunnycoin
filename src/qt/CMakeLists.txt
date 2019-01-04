@@ -1,3 +1,5 @@
+add_subdirectory(test)
+
 file(GLOB TS_FILES "locale/*.ts")
 set_source_files_properties(${TS_FILES} PROPERTIES
     OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/locale")

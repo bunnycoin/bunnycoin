@@ -28,6 +28,8 @@ set(Boost_USE_RELEASE_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 
+enable_testing()
+
 if (APPLE)
     find_library(MACOSX_FRAMEWORK_APP_KIT NAMES AppKit)
     find_library(MACOSX_FRAMEWORK_APPLICATION_SERVICES NAMES ApplicationServices)
@@ -49,8 +51,9 @@ if(WIN32)
     set(Boost_THREADAPI "win32")
 endif()
 
-find_package(Boost COMPONENTS chrono filesystem program_options system thread REQUIRED)
-find_package(Qt5 COMPONENTS Gui LinguistTools Network Widgets REQUIRED)
+find_package(Boost REQUIRED COMPONENTS chrono filesystem program_options system thread unit_test_framework)
+find_package(Qt5 REQUIRED COMPONENTS Gui LinguistTools Network Test Widgets)
+find_package(Threads REQUIRED)
 
 if(OVERRIDE_OPENSSL_CRYPTO_LIBRARY AND OVERRIDE_OPENSSL_SSL_LIBRARY AND OVERRIDE_OPENSSL_INCLUDE_DIR)
     add_library(OpenSSL::Crypto ${STATIC_OR_SHARED} IMPORTED)
