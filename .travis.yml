@@ -17,7 +17,7 @@ jobs:
       services: docker
       env:
       - HOST=x86_64-unknown-linux-gnu
-      - PACKAGES="bash-completion debhelper libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev libdb++-dev libqrencode-dev libssl1.0-dev qt5-default qtbase5-dev qttools5-dev qttools5-dev-tools cmake ninja-build"
+      - PACKAGES="bash-completion debhelper libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-test-dev libboost-thread-dev libdbus-1-dev libminiupnpc-dev libdb++-dev libqrencode-dev libssl1.0-dev qt5-default qtbase5-dev qttools5-dev qttools5-dev-tools cmake ninja-build"
     - os: linux
       dist: trusty
       language: cpp

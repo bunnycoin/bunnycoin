@@ -1,6 +1,7 @@
 add_subdirectory(json)
 add_subdirectory(leveldb)
 add_subdirectory(qt)
+add_subdirectory(test)
 
 add_library(core STATIC
     addrman.cpp
@@ -69,7 +70,7 @@ add_library(core STATIC
     walletdb.h
 )
 
-target_include_directories(bunnycoin-qt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(core
     PRIVATE

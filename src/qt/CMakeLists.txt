@@ -1,3 +1,5 @@
+add_subdirectory(test)
+
 file(GLOB TS_FILES "locale/*.ts")
 set_source_files_properties(${TS_FILES} PROPERTIES
     OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/locale")
@@ -124,9 +126,6 @@ target_link_libraries(bunnycoin-qt PRIVATE
     qrencode
     Qt5::Network
     Qt5::Widgets
-    $<$<PLATFORM_ID:Windows>:gdi32>
-    $<$<PLATFORM_ID:Windows>:user32>
-    $<$<PLATFORM_ID:Windows>:uxtheme>
     $<$<PLATFORM_ID:Windows>:Qt5::QWindowsIntegrationPlugin>
 )
 

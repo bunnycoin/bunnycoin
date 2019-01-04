@@ -28,6 +28,8 @@ set(Boost_USE_RELEASE_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 
+enable_testing()
+
 if (APPLE)
     find_library(MACOSX_FRAMEWORK_APP_KIT NAMES AppKit)
     find_library(MACOSX_FRAMEWORK_APPLICATION_SERVICES NAMES ApplicationServices)
@@ -49,8 +51,9 @@ if(WIN32)
     set(Boost_THREADAPI "win32")
 endif()
 
-find_package(Boost COMPONENTS chrono filesystem program_options system thread REQUIRED)
-find_package(Qt5 COMPONENTS Gui LinguistTools Network Widgets REQUIRED)
+find_package(Boost REQUIRED COMPONENTS chrono filesystem program_options system thread unit_test_framework)
+find_package(Qt5 REQUIRED COMPONENTS Gui LinguistTools Network Test Widgets)
+find_package(Threads REQUIRED)
 
 if(OVERRIDE_OPENSSL_CRYPTO_LIBRARY AND OVERRIDE_OPENSSL_SSL_LIBRARY AND OVERRIDE_OPENSSL_INCLUDE_DIR)
     add_library(OpenSSL::Crypto ${STATIC_OR_SHARED} IMPORTED)
@@ -142,8 +145,20 @@ if(STATIC_BUILD)
     set_property(TARGET qtpcre2 PROPERTY IMPORTED_LOCATION ${QTPCRE2_LIB})
 
     set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+        qtharfbuzz
+        qtlibpng
+        qtpcre2
+        ZLIB::ZLIB
+        $<$<PLATFORM_ID:Windows>:version>
+        $<$<PLATFORM_ID:Windows>:winmm>
         $<$<PLATFORM_ID:Windows>:ws2_32>
-	)
+    )
+
+    set_property(TARGET Qt5::Widgets APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+        $<$<PLATFORM_ID:Windows>:gdi32>
+        $<$<PLATFORM_ID:Windows>:user32>
+        $<$<PLATFORM_ID:Windows>:uxtheme>
+    )
 endif()
 
 if(WIN32)
@@ -167,15 +182,6 @@ if(WIN32)
         $<$<PLATFORM_ID:Windows>:imm32>
     )
 endif()
-
-set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
-    $<$<BOOL:${STATIC_BUILD}>:qtharfbuzz>
-    $<$<BOOL:${STATIC_BUILD}>:qtlibpng>
-    $<$<BOOL:${STATIC_BUILD}>:qtpcre2>
-    $<$<BOOL:${STATIC_BUILD}>:ZLIB::ZLIB>
-    $<$<PLATFORM_ID:Windows>:version>
-    $<$<PLATFORM_ID:Windows>:winmm>
-)
 
 add_subdirectory(src)
 
