@@ -13,4 +13,9 @@ target_link_libraries(test-qt PRIVATE
     Qt5::Widgets
 )
 
+set_target_properties(test-qt PROPERTIES
+    AUTOMOC TRUE
+    AUTORCC TRUE
+)
+
 add_test(NAME test-qt COMMAND test-qt)

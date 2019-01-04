@@ -119,7 +119,11 @@ add_executable(bunnycoin-qt WIN32 MACOSX_BUNDLE
     >
 )
 
-set_property(TARGET bunnycoin-qt PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
+set_target_properties(bunnycoin-qt PROPERTIES
+    Qt5_NO_LINK_QTMAIN TRUE
+    AUTOMOC TRUE
+    AUTORCC TRUE
+)
 
 target_link_libraries(bunnycoin-qt PRIVATE
     core-gui
