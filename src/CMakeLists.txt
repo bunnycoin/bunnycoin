@@ -68,6 +68,7 @@ add_library(core STATIC
     version.h
     walletdb.cpp
     walletdb.h
+    $<$<BOOL:${USE_SSE2}>:scrypt-sse2.cpp>
 )
 
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -106,10 +107,17 @@ target_compile_definitions(core
         $<$<BOOL:${STATIC_BUILD}>:MINIUPNP_STATICLIB>
         $<$<CXX_COMPILER_ID:MSVC>:_CRT_SECURE_NO_WARNINGS>
         $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>
+        $<$<BOOL:${USE_SSE2}>:USE_SSE2>
 
     PRIVATE
         $<$<PLATFORM_ID:Linux>:_FILE_OFFSET_BITS=64> # _FILE_OFFSET_BITS=64 lets 32-bit fopen transparently support large files.
 )
+
+if (USE_SSE2)
+    set_source_files_properties(scrypt-sse2.cpp PROPERTIES
+        COMPILE_OPTIONS "-msse2;-mstackrealign"
+    )
+endif()
 
 add_library(core-gui STATIC
     init.cpp
