@@ -3,6 +3,12 @@ add_subdirectory(leveldb)
 add_subdirectory(qt)
 add_subdirectory(test)
 
+if (USE_BUILD_INFO)
+    add_custom_command(OUTPUT build.h
+        COMMAND ${CMAKE_SOURCE_DIR}/share/genbuild.sh ${CMAKE_CURRENT_BINARY_DIR}/build.h
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif()
+
 add_library(core STATIC
     addrman.cpp
     addrman.h
@@ -69,6 +75,7 @@ add_library(core STATIC
     walletdb.cpp
     walletdb.h
     $<$<BOOL:${USE_SSE2}>:scrypt-sse2.cpp>
+    $<$<BOOL:${USE_BUILD_INFO}>:build.h>
 )
 
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -116,6 +123,12 @@ target_compile_definitions(core
 if (USE_SSE2)
     set_source_files_properties(scrypt-sse2.cpp PROPERTIES
         COMPILE_OPTIONS "-msse2;-mstackrealign"
+    )
+endif()
+
+if (USE_BUILD_INFO)
+    set_source_files_properties(version.cpp PROPERTIES
+        COMPILE_DEFINITIONS HAVE_BUILD_INFO
     )
 endif()
 
