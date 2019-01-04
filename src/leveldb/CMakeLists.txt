@@ -1,4 +1,3 @@
-
 add_library(leveldb
     db/builder.cc
     db/c.cc
@@ -60,7 +59,6 @@ target_compile_definitions(leveldb PRIVATE
 )
 
 target_compile_options(leveldb PRIVATE
-    $<$<OR:$<PLATFORM_ID:Darwin>,$<PLATFORM_ID:Linux>>:-fPIC>
     $<$<CXX_COMPILER_ID:GNU>:-fno-builtin-memcmp>
 )
 

@@ -20,6 +20,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.10)
+set(CMAKE_CXX_STANDARD 11)
 
 set(Boost_USE_STATIC_LIBS ${STATIC_BUILD})
 set(Boost_USE_DEBUG_LIBS OFF)
@@ -81,6 +82,9 @@ set_target_properties(miniupnpc PROPERTIES
     IMPORTED_LOCATION ${MINIUPNPC_LIB}
     INTERFACE_INCLUDE_DIRECTORIES "${MINIUPNPC_INC}"
 )
+set_property(TARGET miniupnpc APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+    $<$<PLATFORM_ID:Windows>:iphlpapi>
+)
 
 if(NOT MINIUPNPC_INC)
     message(FATAL_ERROR "cannot find miniupnpc include directory")
@@ -136,6 +140,10 @@ if(STATIC_BUILD)
     find_library(QTPCRE2_LIB NAMES qtpcre2)
     add_library(qtpcre2 STATIC IMPORTED)
     set_property(TARGET qtpcre2 PROPERTY IMPORTED_LOCATION ${QTPCRE2_LIB})
+
+    set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+        $<$<PLATFORM_ID:Windows>:ws2_32>
+	)
 endif()
 
 if(WIN32)
