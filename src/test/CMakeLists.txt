@@ -43,4 +43,4 @@ target_compile_definitions(test-core PRIVATE
     $<$<NOT:$<BOOL:${STATIC_BUILD}>>:BOOST_TEST_DYN_LINK>
 )
 
-add_test(NAME test-core COMMAND test-core)
+add_test(NAME test-core COMMAND test-core WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src)
