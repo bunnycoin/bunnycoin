@@ -38,6 +38,10 @@ BEGIN_FOLD build
 cmake --build build
 END_FOLD
 
+BEGIN_FOLD test
+cmake --build build --target test
+END_FOLD
+
 BEGIN_FOLD install
 cmake --build build --target install
 END_FOLD

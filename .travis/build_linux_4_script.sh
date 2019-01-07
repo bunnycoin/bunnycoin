@@ -40,19 +40,19 @@ if [[ $HOST = *-mingw32 ]]; then
 
     BEGIN_FOLD cmake
     DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DSTATIC_BUILD=ON ..
+    cd ..
     END_FOLD
 
     BEGIN_FOLD build
-    DOCKER_EXEC ninja
+    DOCKER_EXEC cmake --build build
     END_FOLD
 
     BEGIN_FOLD install
-    DOCKER_EXEC ninja install
+    DOCKER_EXEC cmake --build build --target install
     END_FOLD
 
     BEGIN_FOLD package
     PACKAGE_FILE=${PACKAGE_DIR}.zip
-    cd ..
     zip -r ${PACKAGE_FILE} ${PACKAGE_DIR}
     END_FOLD
 else
@@ -60,21 +60,25 @@ else
 
     BEGIN_FOLD cmake
     DOCKER_EXEC cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR}/usr ..
+    cd ..
     END_FOLD
 
     BEGIN_FOLD build
-    DOCKER_EXEC ninja
+    DOCKER_EXEC cmake --build build
+    END_FOLD
+
+    BEGIN_FOLD test
+    DOCKER_EXEC cmake --build build --target test
     END_FOLD
 
     BEGIN_FOLD install
-    DOCKER_EXEC ninja install
+    DOCKER_EXEC cmake --build build --target install
     END_FOLD
 
     BEGIN_FOLD package
     DEB_DIR=${PACKAGE_DIR}/DEBIAN
     DEB_CONTROL_FILE=${DEB_DIR}/control
     PACKAGE_FILE=${PACKAGE_DIR}.deb
-    cd ..
     DOCKER_EXEC mkdir -p ${DEB_DIR}
     DOCKER_EXEC cp .travis/deb-control-bionic ${DEB_CONTROL_FILE}
     DEB_BUILD_ARCH=`DOCKER_EXEC dpkg-architecture -q DEB_BUILD_ARCH`
