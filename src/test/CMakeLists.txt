@@ -1,46 +1,68 @@
-add_executable(test-core
-    accounting_tests.cpp
-#    alert_tests.cpp
-    allocator_tests.cpp
-    base32_tests.cpp
-#    base58_tests.cpp
-    base64_tests.cpp
-    bignum_tests.cpp
-#    bloom_tests.cpp
-#    canonical_tests.cpp
-    checkblock_tests.cpp
-#    Checkpoints_tests.cpp
-    compress_tests.cpp
-#    DoS_tests.cpp
-    getarg_tests.cpp
-#    key_tests.cpp
-#    miner_tests.cpp
-    mruset_tests.cpp
-    multisig_tests.cpp
-#    netbase_tests.cpp
-    pmt_tests.cpp
-#    rpc_tests.cpp
-    script_P2SH_tests.cpp
-#    script_tests.cpp
-    scrypt_tests.cpp
-    serialize_tests.cpp
-    sigopcount_tests.cpp
+add_library(core-test STATIC
     test_bitcoin.cpp
-#    transaction_tests.cpp
-    uint160_tests.cpp
-    uint256_tests.cpp
-    util_tests.cpp
-#    wallet_tests.cpp
     ../wallet.cpp
 )
 
-target_link_libraries(test-core PRIVATE
+target_link_libraries(core-test PUBLIC
     core
     Boost::unit_test_framework
 )
 
-target_compile_definitions(test-core PRIVATE
+target_compile_definitions(core-test PUBLIC
     $<$<NOT:$<BOOL:${STATIC_BUILD}>>:BOOST_TEST_DYN_LINK>
 )
 
-add_test(NAME test-core COMMAND test-core WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src)
+function(add_core_test target_name)
+    add_executable(${target_name} ${ARGN})
+    target_link_libraries(${target_name} PRIVATE core-test)
+    add_test(NAME ${target_name} COMMAND ${target_name} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src)
+endfunction()
+
+add_core_test(core_accounting_tests accounting_tests.cpp)
+add_core_test(core_alert_tests alert_tests.cpp)
+add_core_test(core_allocator_tests allocator_tests.cpp)
+add_core_test(core_base32_tests base32_tests.cpp)
+add_core_test(core_base58_tests base58_tests.cpp)
+add_core_test(core_base64_tests base64_tests.cpp)
+add_core_test(core_bignum_tests bignum_tests.cpp)
+add_core_test(core_bloom_tests bloom_tests.cpp)
+add_core_test(core_canonical_tests canonical_tests.cpp)
+add_core_test(core_checkblock_tests checkblock_tests.cpp)
+add_core_test(core_Checkpoints_tests Checkpoints_tests.cpp)
+add_core_test(core_compress_tests compress_tests.cpp)
+add_core_test(core_DoS_tests DoS_tests.cpp)
+add_core_test(core_getarg_tests getarg_tests.cpp)
+add_core_test(core_key_tests key_tests.cpp)
+add_core_test(core_miner_tests miner_tests.cpp)
+add_core_test(core_mruset_tests mruset_tests.cpp)
+add_core_test(core_multisig_tests multisig_tests.cpp)
+add_core_test(core_netbase_tests netbase_tests.cpp)
+add_core_test(core_pmt_tests pmt_tests.cpp)
+add_core_test(core_rpc_tests rpc_tests.cpp)
+add_core_test(core_script_P2SH_tests script_P2SH_tests.cpp)
+add_core_test(core_script_tests script_tests.cpp)
+add_core_test(core_scrypt_tests scrypt_tests.cpp)
+add_core_test(core_serialize_tests serialize_tests.cpp)
+add_core_test(core_sigopcount_tests sigopcount_tests.cpp)
+add_core_test(core_transaction_tests transaction_tests.cpp)
+add_core_test(core_uint160_tests uint160_tests.cpp)
+add_core_test(core_uint256_tests uint256_tests.cpp)
+add_core_test(core_util_tests util_tests.cpp)
+add_core_test(core_wallet_tests wallet_tests.cpp)
+
+set_tests_properties(
+    core_alert_tests
+    core_base58_tests
+    core_bloom_tests
+    core_Checkpoints_tests
+    core_DoS_tests
+    core_key_tests
+    core_miner_tests
+    core_netbase_tests
+    core_rpc_tests
+    core_transaction_tests
+    core_wallet_tests
+
+    PROPERTIES
+        DISABLED TRUE
+)
