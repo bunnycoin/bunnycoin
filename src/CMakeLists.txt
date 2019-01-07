@@ -1,7 +1,10 @@
 add_subdirectory(json)
 add_subdirectory(leveldb)
 add_subdirectory(qt)
-add_subdirectory(test)
+
+if(UNIT_TESTS)
+    add_subdirectory(test)
+endif()
 
 if (USE_BUILD_INFO)
     add_custom_command(OUTPUT build.h

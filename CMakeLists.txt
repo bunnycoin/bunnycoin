@@ -7,6 +7,7 @@ project(bunnycoin
 set(STATIC_BUILD OFF CACHE BOOL "Link dependencies staticaly")
 set(USE_SSE2 OFF CACHE BOOL "Use SSE2")
 set(USE_BUILD_INFO OFF CACHE BOOL "Pass git commit information to the binary")
+set(UNIT_TESTS ON CACHE BOOL "Build unit tests")
 set(OVERRIDE_OPENSSL_CRYPTO_LIBRARY "" CACHE FILEPATH "Explicit path to crypto library")
 set(OVERRIDE_OPENSSL_SSL_LIBRARY "" CACHE FILEPATH "Explicit path to openssl library")
 set(OVERRIDE_OPENSSL_INCLUDE_DIR "" CACHE PATH "Explicit path to openssl include dir")

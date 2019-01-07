@@ -39,7 +39,7 @@ if [[ $HOST = *-mingw32 ]]; then
     END_FOLD
 
     BEGIN_FOLD cmake
-    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DSTATIC_BUILD=ON ..
+    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DSTATIC_BUILD=ON -DUNIT_TESTS=OFF ..
     cd ..
     END_FOLD
 

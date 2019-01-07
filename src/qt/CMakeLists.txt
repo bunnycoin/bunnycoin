@@ -1,4 +1,6 @@
-add_subdirectory(test)
+if(UNIT_TESTS)
+    add_subdirectory(test)
+endif()
 
 file(GLOB TS_FILES "locale/*.ts")
 set_source_files_properties(${TS_FILES} PROPERTIES
