@@ -1,8 +1,17 @@
-#include "uritests.h"
 #include "../guiutil.h"
 #include "../walletmodel.h"
 
+#include <QObject>
+#include <QTest>
 #include <QUrl>
+
+class URITests : public QObject
+{
+    Q_OBJECT
+
+private slots:
+    void uriTests();
+};
 
 void URITests::uriTests()
 {
@@ -60,3 +69,7 @@ void URITests::uriTests()
     uri.setUrl(QString("bunnycoin:LQDPC5rbjDB72fGFVHu4enYhxGAZuRiFh9?amount=1,000.0&label=Wikipedia Example"));
     QVERIFY(!GUIUtil::parseBitcoinURI(uri, &rv));
 }
+
+QTEST_APPLESS_MAIN(URITests)
+
+#include "uritests.moc"
