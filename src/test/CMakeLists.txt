@@ -1,20 +1,7 @@
-add_library(core-test STATIC
-    test_bitcoin.cpp
-    ../wallet.cpp
-)
-
-target_link_libraries(core-test PUBLIC
-    core
-    Boost::unit_test_framework
-)
-
-target_compile_definitions(core-test PUBLIC
-    $<$<NOT:$<BOOL:${STATIC_BUILD}>>:BOOST_TEST_DYN_LINK>
-)
-
 function(add_core_test target_name)
-    add_executable(${target_name} ${ARGN})
-    target_link_libraries(${target_name} PRIVATE core-test)
+    add_executable(${target_name} test_bitcoin.cpp ${ARGN})
+    target_link_libraries(${target_name} PRIVATE core-cli Boost::unit_test_framework)
+    target_compile_definitions(${target_name} PRIVATE $<$<NOT:$<BOOL:${STATIC_BUILD}>>:BOOST_TEST_DYN_LINK>)
     add_test(NAME ${target_name} COMMAND ${target_name} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src)
 endfunction()
 

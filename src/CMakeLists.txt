@@ -132,6 +132,9 @@ if (USE_BUILD_INFO)
     )
 endif()
 
+add_library(core-cli STATIC wallet.cpp wallet.h)
+target_link_libraries(core-cli PUBLIC core)
+
 add_library(core-gui STATIC
     init.cpp
     init.h
@@ -141,13 +144,8 @@ add_library(core-gui STATIC
 target_compile_definitions(core-gui PRIVATE QT_GUI)
 target_link_libraries(core-gui PUBLIC core)
 
-add_executable(bunnycoind MACOSX_BUNDLE
-    init.cpp
-    init.h
-    wallet.cpp
-    wallet.h
-)
-target_link_libraries(bunnycoind PRIVATE core)
+add_executable(bunnycoind MACOSX_BUNDLE init.cpp init.h)
+target_link_libraries(bunnycoind PRIVATE core-cli)
 
 if (WIN32 OR APPLE)
     install(TARGETS bunnycoind DESTINATION .)
