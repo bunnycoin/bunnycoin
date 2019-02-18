@@ -1,3 +1,5 @@
+#include "test_bitcoin.h"
+
 #define BOOST_TEST_MODULE Bunnycoin Test Suite
 #include "json/json_spirit_reader_template.h"
 #include "json/json_spirit_writer_template.h"
@@ -14,6 +16,10 @@
 #include "main.h"
 #include "wallet.h"
 #include "util.h"
+
+#include <atomic>
+#include <thread>
+#include <limits>
 
 CWallet* pwalletMain;
 CClientUIInterface uiInterface;
@@ -168,5 +174,50 @@ ParseScript(string s)
     }
 
     return result;
+}
+
+MiningResult mine(CBlock block, int blockIndex) {
+    BOOST_TEST_MESSAGE("Mining block " << blockIndex);
+    std::atomic<MiningResult> result;
+    result = MiningResult{false, 0};
+    std::vector<std::thread> threads;
+    const uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+
+    constexpr std::size_t THREAD_COUNT = 4;
+    unsigned int range = std::numeric_limits<unsigned int>::max() / THREAD_COUNT;
+    for (std::size_t i = 0; i < THREAD_COUNT; ++i) {
+        unsigned int start = range * i;
+        unsigned int end = range * (i + 1);
+        threads.emplace_back([block, hashTarget, start, end, &result] () mutable {
+            uint256 thash;
+            char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
+            for (unsigned int i = start; i < end && !result.load().success; ++i)
+            {
+                block.nNonce = i;
+
+                scrypt_1024_1_1_256_sp(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
+
+                if (thash <= hashTarget)
+                {
+                    // Found a solution
+                    result.store(MiningResult{true, block.nNonce});
+                    break;
+                }
+            }
+        });
+    }
+
+    for(auto& thread : threads) {
+        thread.join();
+    }
+
+    MiningResult theResult = result.load();
+    if (theResult.success) {
+        BOOST_TEST_MESSAGE("block " << std::dec << blockIndex << " nonce = 0x" << std::hex << std::setfill('0') << std::setw(8) << std::right << theResult.nonce);
+    } else {
+        BOOST_TEST_MESSAGE("Could not find solution for block " << std::dec << blockIndex);
+    }
+
+    return theResult;
 }
 
