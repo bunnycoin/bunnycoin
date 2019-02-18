@@ -114,22 +114,6 @@ else()
     message(STATUS "found berkeleydb library: ${BERKELEYDB_INC} ${BERKELEYDB_LIB}")
 endif()
 
-find_path(QRENCODE_INC NAMES qrencode.h)
-find_library(QRENCODE_LIB NAMES qrencode)
-add_library(qrencode ${STATIC_OR_SHARED} IMPORTED)
-set_target_properties(qrencode PROPERTIES
-    IMPORTED_LOCATION ${QRENCODE_LIB}
-    INTERFACE_INCLUDE_DIRECTORIES "${QRENCODE_INC}"
-)
-
-if(NOT QRENCODE_INC)
-    message(FATAL_ERROR "cannot find qrencode include directory")
-elseif(NOT QRENCODE_LIB)
-    message(FATAL_ERROR "cannot find qrencode library")
-else()
-    message(STATUS "found qrencode library: ${QRENCODE_INC} ${QRENCODE_LIB}")
-endif()
-
 if(STATIC_BUILD)
     find_package(ZLIB REQUIRED)
 

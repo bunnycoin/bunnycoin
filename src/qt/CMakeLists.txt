@@ -2,12 +2,31 @@ if(UNIT_TESTS)
     add_subdirectory(test)
 endif()
 
+set(USE_QRCODE ON CACHE BOOL "Enable QR code support")
+if (USE_QRCODE)
+    find_path(QRENCODE_INC NAMES qrencode.h)
+    find_library(QRENCODE_LIB NAMES qrencode)
+    add_library(qrencode ${STATIC_OR_SHARED} IMPORTED)
+    set_target_properties(qrencode PROPERTIES
+        IMPORTED_LOCATION ${QRENCODE_LIB}
+        INTERFACE_INCLUDE_DIRECTORIES "${QRENCODE_INC}"
+    )
+
+    if(NOT QRENCODE_INC)
+        message(FATAL_ERROR "cannot find qrencode include directory")
+    elseif(NOT QRENCODE_LIB)
+        message(FATAL_ERROR "cannot find qrencode library")
+    else()
+        message(STATUS "found qrencode library: ${QRENCODE_INC} ${QRENCODE_LIB}")
+    endif()
+endif()
+
 file(GLOB TS_FILES "locale/*.ts")
 set_source_files_properties(${TS_FILES} PROPERTIES
     OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/locale")
 qt5_add_translation(QM_FILES ${TS_FILES})
 
-qt5_wrap_ui(UI_SOURCES
+set(ui_files
     forms/aboutdialog.ui
     forms/addressbookpage.ui
     forms/askpassphrasedialog.ui
@@ -15,7 +34,6 @@ qt5_wrap_ui(UI_SOURCES
     forms/editaddressdialog.ui
     forms/optionsdialog.ui
     forms/overviewpage.ui
-    forms/qrcodedialog.ui
     forms/rpcconsole.ui
     forms/sendcoinsdialog.ui
     forms/sendcoinsentry.ui
@@ -24,6 +42,12 @@ qt5_wrap_ui(UI_SOURCES
     forms/votecoinsdialog.ui
     forms/votecoinsentry.ui
 )
+
+if (USE_QRCODE)
+    list(APPEND ui_files forms/qrcodedialog.ui)
+endif()
+
+qt5_wrap_ui(UI_SOURCES ${ui_files})
 
 add_executable(bunnycoin-qt WIN32 MACOSX_BUNDLE
     aboutdialog.cpp
@@ -70,8 +94,10 @@ add_executable(bunnycoin-qt WIN32 MACOSX_BUNDLE
     overviewpage.h
     paymentserver.cpp
     paymentserver.h
-    qrcodedialog.cpp
-    qrcodedialog.h
+    $<$<BOOL:${USE_QRCODE}>:
+        qrcodedialog.cpp
+        qrcodedialog.h
+    >
     qvalidatedlineedit.cpp
     qvalidatedlineedit.h
     qvaluecombobox.cpp
@@ -129,7 +155,7 @@ set_target_properties(bunnycoin-qt PROPERTIES
 
 target_link_libraries(bunnycoin-qt PRIVATE
     core-gui
-    qrencode
+    $<$<BOOL:${USE_QRCODE}>:qrencode>
     Qt5::Network
     Qt5::Widgets
     $<$<PLATFORM_ID:Windows>:Qt5::QWindowsIntegrationPlugin>
@@ -137,10 +163,13 @@ target_link_libraries(bunnycoin-qt PRIVATE
 
 target_compile_definitions(bunnycoin-qt PRIVATE
     QT_DEPRECATED_WARNINGS
-    USE_QRCODE
     $<$<PLATFORM_ID:Darwin>:Q_OS_MAC>
     $<$<PLATFORM_ID:Windows>:BUNNYCOIN_STATIC_WINDOWS_PLUGIN>
 )
+
+if (USE_QRCODE)
+    set_source_files_properties(addressbookpage.cpp PROPERTIES COMPILE_DEFINITIONS USE_QRCODE)
+endif()
 
 if (APPLE)
     set_target_properties(bunnycoin-qt PROPERTIES
