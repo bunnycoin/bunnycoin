@@ -1128,7 +1128,7 @@ int static generateMTRandom(unsigned int s, int range)
 
 
 
-int64 static GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
+int64 GetBlockValue(int nHeight, int64 nFees, uint256 prevHash)
 {
     int64 nSubsidy = 10000 * COIN;
 

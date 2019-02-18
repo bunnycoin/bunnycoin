@@ -187,6 +187,8 @@ bool IsInitialBlockDownload();
 std::string GetWarnings(std::string strFor);
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
 bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow = false);
+/** Get block reward */
+int64 GetBlockValue(int nHeight, int64 nFees, uint256 prevHash);
 /** Connect/disconnect blocks until pindexNew is the new tip of the active block chain */
 bool SetBestChain(CValidationState &state, CBlockIndex* pindexNew);
 /** Find the best known block, and make it the tip of the block chain */

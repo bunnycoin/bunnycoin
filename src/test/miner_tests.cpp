@@ -15,34 +15,36 @@ struct {
     unsigned char extranonce;
     unsigned int nonce;
 } blockinfo[] = {
-    {4, 0xa4ad9f65}, {2, 0x15cf2b27}, {1, 0x037620ac}, {1, 0x700d9c54},
-    {2, 0xce79f74f}, {2, 0x52d9c194}, {1, 0x77bc3efc}, {2, 0xbb62c5e8},
-    {2, 0x83ff997a}, {1, 0x48b984ee}, {1, 0xef925da0}, {2, 0x680d2979},
-    {2, 0x08953af7}, {1, 0x087dd553}, {2, 0x210e2818}, {2, 0xdfffcdef},
-    {1, 0xeea1b209}, {2, 0xba4a8943}, {1, 0xa7333e77}, {1, 0x344f3e2a},
-    {3, 0xd651f08e}, {2, 0xeca3957f}, {2, 0xca35aa49}, {1, 0x6bb2065d},
-    {2, 0x0170ee44}, {1, 0x6e12f4aa}, {2, 0x43f4f4db}, {2, 0x279c1c44},
-    {2, 0xb5a50f10}, {2, 0xb3902841}, {2, 0xd198647e}, {2, 0x6bc40d88},
-    {1, 0x633a9a1c}, {2, 0x9a722ed8}, {2, 0x55580d10}, {1, 0xd65022a1},
-    {2, 0xa12ffcc8}, {1, 0x75a6a9c7}, {2, 0xfb7c80b7}, {1, 0xe8403e6c},
-    {1, 0xe34017a0}, {3, 0x659e177b}, {2, 0xba5c40bf}, {5, 0x022f11ef},
-    {1, 0xa9ab516a}, {5, 0xd0999ed4}, {1, 0x37277cb3}, {1, 0x830f735f},
-    {1, 0xc6e3d947}, {2, 0x824a0c1b}, {1, 0x99962416}, {1, 0x75336f63},
-    {1, 0xaacf0fea}, {1, 0xd6531aec}, {5, 0x7afcf541}, {5, 0x9d6fac0d},
-    {1, 0x4cf5c4df}, {1, 0xabe0f2a0}, {6, 0x4a3dac18}, {2, 0xf265febe},
-    {2, 0x1bc9f23f}, {1, 0xad49ab71}, {1, 0x9f2d8923}, {1, 0x15acb65d},
-    {2, 0xd1cecb52}, {2, 0xf856808b}, {1, 0x0fa96e29}, {1, 0xe063ecbc},
-    {1, 0x78d926c6}, {5, 0x3e38ad35}, {5, 0x73901915}, {1, 0x63424be0},
-    {1, 0x6d6b0a1d}, {2, 0x888ba681}, {2, 0xe96b0714}, {1, 0xb7fcaa55},
-    {2, 0x19c106eb}, {1, 0x5aa13484}, {2, 0x5bf4c2f3}, {2, 0x94d401dd},
-    {1, 0xa9bc23d9}, {1, 0x3a69c375}, {1, 0x56ed2006}, {5, 0x85ba6dbd},
-    {1, 0xfd9b2000}, {1, 0x2b2be19a}, {1, 0xba724468}, {1, 0x717eb6e5},
-    {1, 0x70de86d9}, {1, 0x74e23a42}, {1, 0x49e92832}, {2, 0x6926dbb9},
-    {0, 0x64452497}, {1, 0x54306d6f}, {2, 0x97ebf052}, {2, 0x55198b70},
-    {2, 0x03fe61f0}, {1, 0x98f9e67f}, {1, 0xc0842a09}, {1, 0xdfed39c5},
-    {1, 0x3144223e}, {1, 0xb3d12f84}, {1, 0x7366ceb7}, {5, 0x6240691b},
-    {2, 0xd3529b57}, {1, 0xf4cae3b1}, {1, 0x5b1df222}, {1, 0xa16a5c70},
-    {2, 0xbbccedc6}, {2, 0xfe38d0ef},
+    {4, 0x00077d43}, {2, 0x000500a9}, {1, 0x00289b24}, {1, 0x001ba71c},
+    {2, 0x00255048}, {2, 0x00142273}, {1, 0x0001ed5d}, {2, 0x0017cad9},
+    {2, 0x000e3e07}, {1, 0x00244e44}, {1, 0x002bac47}, {2, 0x00029f46},
+    {2, 0x000baea8}, {1, 0x00051315}, {2, 0x00058911}, {2, 0x0026b46c},
+    {1, 0x00001b06}, {2, 0x0002c696}, {1, 0x000248ca}, {1, 0x0005aef1},
+    {3, 0x00090cc2}, {2, 0x00125df6}, {2, 0x0000baa6}, {1, 0x00070942},
+    {2, 0x00191dc4}, {1, 0x001250a9}, {2, 0x001140c6}, {2, 0x000e0e13},
+    {2, 0x00116062}, {2, 0x00018538}, {2, 0x00473625}, {2, 0x00050543},
+    {1, 0x001ad13f}, {2, 0x000bee8a}, {2, 0x000d2b37}, {1, 0x001b50a7},
+    {2, 0x000189c9}, {1, 0x000573cb}, {2, 0x0006e49d}, {1, 0x00039aef},
+    {1, 0x000c3b73}, {3, 0x0000af4e}, {2, 0x002180a0}, {5, 0x0010d47a},
+    {1, 0x00006bf4}, {5, 0x002d66d3}, {1, 0x0003f5cc}, {1, 0x0007607b},
+    {1, 0x002e9862}, {2, 0x001931a5}, {1, 0x000096ad}, {1, 0x00015648},
+    {1, 0x0012bba6}, {1, 0x0006bcb2}, {5, 0x002a2014}, {5, 0x000557dc},
+    {1, 0x00036256}, {1, 0x000cc316}, {6, 0x000beb6d}, {2, 0x0000f262},
+    {2, 0x0000e892}, {1, 0x00250dcb}, {1, 0x000a1d2c}, {1, 0x000aacee},
+    {2, 0x0005fc8e}, {2, 0x000189ba}, {1, 0x000012c5}, {1, 0x00040344},
+    {1, 0x0004077a}, {5, 0x00083c15}, {5, 0x00118263}, {1, 0x000bdc4a},
+    {1, 0x000786d7}, {2, 0x0005174e}, {2, 0x00001ba0}, {1, 0x000c91eb},
+    {2, 0x0002803f}, {1, 0x000a178a}, {2, 0x000439de}, {2, 0x0011ccba},
+    {1, 0x000a9b60}, {1, 0x000aab8c}, {1, 0x00525365}, {5, 0x004a0567},
+    {1, 0x0028b46f}, {1, 0x000716d0}, {1, 0x00145a38}, {1, 0x0018c000},
+    {1, 0x00002cd3}, {1, 0x001d9037}, {1, 0x0006f89b}, {2, 0x00041330},
+    {0, 0x00176ce0}, {1, 0x004187ce}, {2, 0x00057c3c}, {2, 0x00101db9},
+    {2, 0x001aa9ec}, {1, 0x00107861}, {1, 0x000ebeee}, {1, 0x001e81be},
+    {1, 0x0003bdfa}, {1, 0x000d1dc3}, {1, 0x0007c21b}, {5, 0x00114f02},
+    {2, 0x000a1fe7}, {1, 0x001a5002}, {1, 0x002addfe}, {1, 0x000800e9},
+    {2, 0x00018018}, {2, 0x00050a76}, {1, 0xc00b115e}, {1, 0x80006ba2},
+    {1, 0x0001bcb7}, {1, 0x0003a80d}, {1, 0x8003624b}, {1, 0x00074774},
+    {1, 0x800711aa}, {1, 0x00031211}, {1, 0x800e007b}, {1, 0x40006e7c},
 };
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
@@ -68,7 +70,14 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         pblock->vtx[0].vin[0].scriptSig = CScript();
         pblock->vtx[0].vin[0].scriptSig.push_back(blockinfo[i].extranonce);
         pblock->vtx[0].vin[0].scriptSig.push_back(pindexBest->nHeight);
+        pblock->vtx[0].vout[0].nValue = GetBlockValue(pindexBest->nHeight+1, 0, pindexBest->GetBlockHash());
         pblock->vtx[0].vout[0].scriptPubKey = CScript();
+        if (isGrantAwardBlock(pindexBest->nHeight+1)) {
+            pblock->vtx[0].vout.resize(2);
+            CBitcoinAddress address("BUNNchaiaxxaS3DEcb894TomLT3VxxCcmK");
+            pblock->vtx[0].vout[1].scriptPubKey.SetDestination( address.Get() );
+            pblock->vtx[0].vout[1].nValue = 308823250000000;
+        }
         if (txFirst.size() < 2)
             txFirst.push_back(new CTransaction(pblock->vtx[0]));
         pblock->hashMerkleRoot = pblock->BuildMerkleTree();
@@ -189,16 +198,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     BOOST_CHECK(pblocktemplate = CreateNewBlockWithKey(reservekey));
     delete pblocktemplate;
     mempool.clear();
-
-    // subsidy changing
-    int nHeight = pindexBest->nHeight;
-    pindexBest->nHeight = 209999;
-    BOOST_CHECK(pblocktemplate = CreateNewBlockWithKey(reservekey));
-    delete pblocktemplate;
-    pindexBest->nHeight = 210000;
-    BOOST_CHECK(pblocktemplate = CreateNewBlockWithKey(reservekey));
-    delete pblocktemplate;
-    pindexBest->nHeight = nHeight;
 }
 
 BOOST_AUTO_TEST_CASE(sha256transform_equality)
