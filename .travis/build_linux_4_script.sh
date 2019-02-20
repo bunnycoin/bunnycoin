@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copyright (c) 2018 The Bitcoin Core developers
-# Copyright (c) 2018 The Bunnycoin developers
+# Copyright (c) 2018-2019 The Bunnycoin developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +20,6 @@ else
 fi
 
 mkdir build
-cd build || (echo "could not enter build directory"; exit 1)
 
 if [[ $HOST = *-mingw32 ]]; then
     if [[ $HOST = x86_64-w64-mingw32 ]]; then
@@ -33,14 +32,20 @@ if [[ $HOST = *-mingw32 ]]; then
     fi
 
     BEGIN_FOLD dependencies
+    cd build || (echo "could not enter build directory"; exit 1)
     DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=bunnycoin-deps-20181126-${HOST}.tar.xz -nv -O dependencies.tar.xz
     DOCKER_EXEC tar -xf dependencies.tar.xz
     DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=${HOST}-toolchain.cmake -nv -O ${HOST}-toolchain.cmake
+    cd ..
     END_FOLD
 
     BEGIN_FOLD cmake
-    DOCKER_EXEC cmake -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR} -DSTATIC_BUILD=ON -DUNIT_TESTS=OFF ..
-    cd ..
+    DOCKER_EXEC cmake -H. -Bbuild -GNinja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} \
+        -DCMAKE_TOOLCHAIN_FILE=${HOST}-toolchain.cmake \
+        -DSTATIC_BUILD=ON \
+        -DUNIT_TESTS=OFF
     END_FOLD
 
     BEGIN_FOLD build
@@ -59,8 +64,9 @@ else
     PACKAGE_DIR="bunnycoin-${VERSION_NAME}"
 
     BEGIN_FOLD cmake
-    DOCKER_EXEC cmake -GNinja -DCMAKE_INSTALL_PREFIX=../${PACKAGE_DIR}/usr ..
-    cd ..
+    DOCKER_EXEC cmake -H. -Bbuild -GNinja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=${PACKAGE_DIR}/usr
     END_FOLD
 
     BEGIN_FOLD build

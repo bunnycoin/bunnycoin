@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copyright (c) 2018 The Bitcoin Core developers
-# Copyright (c) 2018 The Bunnycoin developers
+# Copyright (c) 2018-2019 The Bunnycoin developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -28,6 +28,7 @@ echo "PACKAGE_DIR=${PACKAGE_DIR}"
 echo "Invoking cmake"
 BEGIN_FOLD cmake
 cmake -H. -Bbuild -GNinja \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=./${PACKAGE_DIR} \
     -DCMAKE_PREFIX_PATH=/usr/local/opt/qt \
     -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
