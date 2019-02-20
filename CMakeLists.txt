@@ -168,6 +168,56 @@ if(WIN32)
     )
 endif()
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    set(USE_SANITIZER_ADDR OFF CACHE BOOL "Enable address sanitizer (cannot be combined with thread sanitizer)")
+    if (USE_SANITIZER_ADDR)
+        add_compile_options(-fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract)
+        link_libraries(asan)
+    endif()
+
+    set(USE_SANITIZER_THREAD OFF CACHE BOOL "Enable thread sanitizer (cannot be combined with address sanitizer or leak sanitizer)")
+    if (USE_SANITIZER_THREAD)
+        add_compile_options(-fsanitize=thread)
+        link_libraries(tsan)
+    endif()
+
+    set(USE_SANITIZER_LEAK OFF CACHE BOOL "Enable leak sanitizer (cannot be combined with thread sanitizer)")
+    if (USE_SANITIZER_LEAK)
+        add_compile_options(-fsanitize=leak)
+        link_libraries(lsan)
+    endif()
+
+    set(USE_SANITIZER_UB OFF CACHE BOOL "Enable undefined behavior sanitizer")
+    if (USE_SANITIZER_UB)
+        add_compile_options(
+            -fsanitize=undefined
+            -fsanitize=shift
+            -fsanitize=shift-exponent
+            -fsanitize=shift-base
+            -fsanitize=integer-divide-by-zero
+            -fsanitize=unreachable
+            -fsanitize=vla-bound
+            -fsanitize=null
+            -fsanitize=return
+            -fsanitize=signed-integer-overflow
+            -fsanitize=bounds
+            -fsanitize=bounds-strict
+            -fsanitize=alignment
+            -fsanitize=object-size
+            -fsanitize=float-divide-by-zero
+            -fsanitize=float-cast-overflow
+            -fsanitize=nonnull-attribute
+            -fsanitize=returns-nonnull-attribute
+            -fsanitize=bool
+            -fsanitize=enum
+            -fsanitize=vptr
+            -fsanitize=pointer-overflow
+            -fsanitize=builtin
+        )
+        link_libraries(ubsan)
+    endif()
+endif()
+
 add_subdirectory(src)
 
 if (WIN32 OR APPLE)
