@@ -151,8 +151,14 @@ public:
     void SetSecretBytes(const unsigned char vch[32]) {
         BIGNUM bn;
         BN_init(&bn);
-        assert(BN_bin2bn(vch, 32, &bn));
-        assert(EC_KEY_regenerate_key(pkey, &bn));
+        {
+            BIGNUM *ret = BN_bin2bn(vch, 32, &bn);
+            assert(ret != nullptr);
+        }
+        {
+            int ret = EC_KEY_regenerate_key(pkey, &bn);
+            assert(ret != 0);
+        }
         BN_clear_free(&bn);
     }
 
@@ -197,7 +203,8 @@ public:
     bool Sign(const uint256 &hash, std::vector<unsigned char>& vchSig) {
         unsigned int nSize = ECDSA_size(pkey);
         vchSig.resize(nSize); // Make sure it is big enough
-        assert(ECDSA_sign(0, (unsigned char*)&hash, sizeof(hash), &vchSig[0], &nSize, pkey));
+        int ret = ECDSA_sign(0, (unsigned char*)&hash, sizeof(hash), &vchSig[0], &nSize, pkey);
+        assert(ret != 0);
         vchSig.resize(nSize); // Shrink to fit actual size
         return true;
     }

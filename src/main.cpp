@@ -1531,13 +1531,15 @@ void CTransaction::UpdateCoins(CValidationState &state, CCoinsViewCache &inputs,
         BOOST_FOREACH(const CTxIn &txin, vin) {
             CCoins &coins = inputs.GetCoins(txin.prevout.hash);
             CTxInUndo undo;
-            assert(coins.Spend(txin.prevout, undo));
+            const bool spent = coins.Spend(txin.prevout, undo);
+            assert(spent);
             txundo.vprevout.push_back(undo);
         }
     }
 
     // add outputs
-    assert(inputs.SetCoins(txhash, CCoins(*this, nHeight)));
+    const bool success = inputs.SetCoins(txhash, CCoins(*this, nHeight));
+    assert(success);
 }
 
 bool CTransaction::HaveInputs(CCoinsViewCache &inputs) const
@@ -1975,7 +1977,8 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
             return state.Abort(_("Failed to write transaction index"));
 
     // add this block to the view's block chain
-    assert(view.SetBestBlock(pindex));
+    const bool bestBlockSuccess = view.SetBestBlock(pindex);
+    assert(bestBlockSuccess);
 
     // Watch for transactions paying to me
     for (unsigned int i=0; i<vtx.size(); i++)
@@ -2066,7 +2069,8 @@ bool SetBestChain(CValidationState &state, CBlockIndex* pindexNew)
     // Flush changes to global coin state
     int64 nStart = GetTimeMicros();
     int nModified = view.GetCacheSize();
-    assert(view.Flush());
+    bool flushResult = view.Flush();
+    assert(flushResult);
     int64 nTime = GetTimeMicros() - nStart;
     if (fBenchmark)
         printf("- Flush %i transactions: %.2fms (%.4fms/tx)\n", nModified, 0.001 * nTime, 0.001 * nTime / nModified);
