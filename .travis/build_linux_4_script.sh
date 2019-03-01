@@ -15,9 +15,11 @@ VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/\s+VERSION\
 if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
     VERSION_NAME="${VERSION_NUMBER}"
+    BINTRAY_VERSION="${VERSION_NUMBER}"
     BINTRAY_PACKAGE="releases"
 else
     VERSION_NAME="${VERSION_NUMBER}-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}"
+    BINTRAY_VERSION="${TRAVIS_BRANCH}"
     BINTRAY_PACKAGE="ci"
 fi
 
@@ -97,5 +99,5 @@ else
 fi
 
 BEGIN_FOLD upload
-curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/downloads/${BINTRAY_PACKAGE}/${VERSION_NAME}/${PACKAGE_FILE}
+curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/downloads/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/${PACKAGE_FILE}
 END_FOLD
