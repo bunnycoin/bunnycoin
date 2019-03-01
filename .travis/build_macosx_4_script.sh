@@ -11,21 +11,18 @@ TRAVIS_COMMIT_LOG=$(git log --format=fuller -1)
 export TRAVIS_COMMIT_LOG
 
 VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/^    VERSION ([0-9]+\.[0-9]+\.[0-9]+)/\1/g" | tr -d '\r'`
-echo "VERSION_NUMBER=${VERSION_NUMBER}"
 
-echo "Getting version name"
 if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
     VERSION_NAME="${VERSION_NUMBER}"
+    BINTRAY_PACKAGE="releases"
 else
     VERSION_NAME="${VERSION_NUMBER}-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}"
+    BINTRAY_PACKAGE="ci"
 fi
-echo "VERSION_NAME=${VERSION_NAME}"
 
 PACKAGE_DIR="bunnycoin-macosx-${VERSION_NAME}"
-echo "PACKAGE_DIR=${PACKAGE_DIR}"
 
-echo "Invoking cmake"
 BEGIN_FOLD cmake
 cmake -H. -Bbuild -GNinja \
     -DCMAKE_BUILD_TYPE=Release \
@@ -60,5 +57,5 @@ zip -r ${PACKAGE_FILE} ${PACKAGE_DIR}
 END_FOLD
 
 BEGIN_FOLD upload
-curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
+curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/downloads/${BINTRAY_PACKAGE}/${VERSION_NAME}/${PACKAGE_FILE}
 END_FOLD

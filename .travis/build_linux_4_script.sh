@@ -15,8 +15,10 @@ VERSION_NUMBER=`cat CMakeLists.txt | grep "^    VERSION" | sed -E "s/\s+VERSION\
 if [ "v$VERSION_NUMBER" == "$TRAVIS_BRANCH" ]
 then
     VERSION_NAME="${VERSION_NUMBER}"
+    BINTRAY_PACKAGE="releases"
 else
     VERSION_NAME="${VERSION_NUMBER}-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}"
+    BINTRAY_PACKAGE="ci"
 fi
 
 mkdir build
@@ -33,9 +35,9 @@ if [[ $HOST = *-mingw32 ]]; then
 
     BEGIN_FOLD dependencies
     cd build || (echo "could not enter build directory"; exit 1)
-    DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=bunnycoin-deps-20181126-${HOST}.tar.xz -nv -O dependencies.tar.xz
+    DOCKER_EXEC wget https://bintray.com/bunnycoin/downloads/download_file?file_path=bunnycoin-deps-20181126-${HOST}.tar.xz -nv -O dependencies.tar.xz
     DOCKER_EXEC tar -xf dependencies.tar.xz
-    DOCKER_EXEC wget https://bintray.com/bunnycoin/bunnycoin/download_file?file_path=${HOST}-toolchain.cmake -nv -O ${HOST}-toolchain.cmake
+    DOCKER_EXEC wget https://bintray.com/bunnycoin/downloads/download_file?file_path=${HOST}-toolchain.cmake -nv -O ${HOST}-toolchain.cmake
     cd ..
     END_FOLD
 
@@ -95,5 +97,5 @@ else
 fi
 
 BEGIN_FOLD upload
-curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/bunnycoin/bunnycoin/${VERSION_NAME}/${PACKAGE_FILE}
+curl -v -T ${PACKAGE_FILE} -u${BINTRAY_USER}:${BINTRAY_API_KEY} https://api.bintray.com/content/bunnycoin/downloads/${BINTRAY_PACKAGE}/${VERSION_NAME}/${PACKAGE_FILE}
 END_FOLD
