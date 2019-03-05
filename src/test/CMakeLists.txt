@@ -39,7 +39,6 @@ add_core_test(core_wallet_tests wallet_tests.cpp)
 
 set_tests_properties(
     core_alert_tests
-    core_bloom_tests
     core_Checkpoints_tests
     core_DoS_tests
     core_netbase_tests
