@@ -43,7 +43,6 @@ set_tests_properties(
     core_bloom_tests
     core_Checkpoints_tests
     core_DoS_tests
-    core_key_tests
     core_netbase_tests
     core_rpc_tests
     core_transaction_tests
