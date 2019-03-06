@@ -5,6 +5,7 @@ project(bunnycoin
 )
 
 set(STATIC_BUILD OFF CACHE BOOL "Link dependencies staticaly")
+set(USE_IPV6 ON CACHE BOOL "Support IPv6")
 set(USE_SSE2 OFF CACHE BOOL "Use SSE2")
 set(USE_BUILD_INFO OFF CACHE BOOL "Pass git commit information to the binary")
 set(UNIT_TESTS ON CACHE BOOL "Build unit tests")

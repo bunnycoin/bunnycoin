@@ -117,6 +117,7 @@ target_compile_definitions(core
         $<$<BOOL:${STATIC_BUILD}>:MINIUPNP_STATICLIB>
         $<$<CXX_COMPILER_ID:MSVC>:_CRT_SECURE_NO_WARNINGS>
         $<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>
+        $<$<BOOL:${USE_IPV6}>:USE_IPV6>
         $<$<BOOL:${USE_SSE2}>:USE_SSE2>
 
     PRIVATE
