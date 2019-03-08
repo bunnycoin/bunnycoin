@@ -44,7 +44,6 @@ set_tests_properties(
     core_alert_tests
     core_rpc_tests
     core_transaction_tests
-    core_wallet_tests
 
     PROPERTIES
         DISABLED TRUE
