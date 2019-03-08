@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(bunnycoin
-    VERSION 1.0.2
+    VERSION 1.0.3
 )
 
 set(STATIC_BUILD OFF CACHE BOOL "Link dependencies staticaly")
