@@ -42,7 +42,6 @@ add_core_test(core_wallet_tests wallet_tests.cpp)
 
 set_tests_properties(
     core_alert_tests
-    core_rpc_tests
     core_transaction_tests
 
     PROPERTIES
