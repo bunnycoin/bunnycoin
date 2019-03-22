@@ -39,10 +39,3 @@ add_core_test(core_uint160_tests uint160_tests.cpp)
 add_core_test(core_uint256_tests uint256_tests.cpp)
 add_core_test(core_util_tests util_tests.cpp)
 add_core_test(core_wallet_tests wallet_tests.cpp)
-
-set_tests_properties(
-    core_alert_tests
-
-    PROPERTIES
-        DISABLED TRUE
-)

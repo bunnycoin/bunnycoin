@@ -7,16 +7,43 @@
 #include <fstream>
 
 #include "alert.h"
+#include "base58.h"
+#include "key.h"
 #include "serialize.h"
 #include "util.h"
 
-#if 0
+CAlert Sign(const CUnsignedAlert &alert, const CKey &key)
+{
+    CDataStream sMsg(SER_NETWORK, PROTOCOL_VERSION);
+    sMsg << alert;
+
+    CAlert signedAlert;
+    signedAlert.vchMsg.clear();
+    signedAlert.vchMsg.resize(sMsg.size());
+    std::copy(sMsg.begin(), sMsg.end(), signedAlert.vchMsg.begin());
+
+    auto hash = Hash(signedAlert.vchMsg.begin(), signedAlert.vchMsg.end());
+    key.Sign(hash, signedAlert.vchSig);
+    return signedAlert;
+}
+
 //
 // alertTests contains 7 alerts, generated with this code:
 // (SignAndSave code not shown, alert signing key is secret)
 //
+void GenerateTestFile(boost::filesystem::path testFile, const char* base58SecretKey)
 {
-    CAlert alert;
+    CBitcoinSecret secret;
+    secret.SetString(base58SecretKey);
+    CKey key = secret.GetKey();
+
+    FILE* fp = fopen(testFile.string().c_str(), "wb");
+    if (!fp) return;
+
+    CAutoFile fileout = CAutoFile(fp, SER_DISK, CLIENT_VERSION);
+    if (!fileout) return;
+
+    CUnsignedAlert alert;
     alert.nRelayUntil   = 60;
     alert.nExpiration   = 24 * 60 * 60;
     alert.nID           = 1;
@@ -27,45 +54,44 @@
     alert.strComment    = "Alert comment";
     alert.strStatusBar  = "Alert 1";
 
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     alert.setSubVer.insert(std::string("/Satoshi:0.1.0/"));
     alert.strStatusBar  = "Alert 1 for Satoshi 0.1.0";
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     alert.setSubVer.insert(std::string("/Satoshi:0.2.0/"));
     alert.strStatusBar  = "Alert 1 for Satoshi 0.1.0, 0.2.0";
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     alert.setSubVer.clear();
     ++alert.nID;
     alert.nCancel = 1;
     alert.nPriority = 100;
     alert.strStatusBar  = "Alert 2, cancels 1";
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     alert.nExpiration += 60;
     ++alert.nID;
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     ++alert.nID;
     alert.nMinVer = 11;
     alert.nMaxVer = 22;
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     ++alert.nID;
     alert.strStatusBar  = "Alert 2 for Satoshi 0.1.0";
     alert.setSubVer.insert(std::string("/Satoshi:0.1.0/"));
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 
     ++alert.nID;
     alert.nMinVer = 0;
     alert.nMaxVer = 999999;
     alert.strStatusBar  = "Evil Alert'; /bin/ls; echo '";
     alert.setSubVer.clear();
-    SignAndSave(alert, "test/alertTests");
+    fileout << Sign(alert, key);
 }
-#endif
 
 struct ReadAlerts
 {
@@ -80,6 +106,8 @@ struct ReadAlerts
             testFile = fs::path(BOOST_PP_STRINGIZE(TEST_DATA_DIR)) / filename;
         }
 #endif
+//        GenerateTestFile(testFile, "HERE GOES BASE58 PRIVATE ALERT KEY");
+
         FILE* fp = fopen(testFile.string().c_str(), "rb");
         if (!fp) return;
 
