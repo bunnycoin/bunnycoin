@@ -1265,7 +1265,7 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
 
 // Bunnycoin
 
-unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
     unsigned int nProofOfWorkLimit = bnProofOfWorkLimit.GetCompact();
 
